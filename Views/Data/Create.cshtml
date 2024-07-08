@@ -1,0 +1,17 @@
+@{
+    ViewData["Title"] = "Create Data";
+}
+@model TestMVC.Models.TestData
+
+<div class="text-center">
+    <h1 class="display-4">Saved Data</h1>
+</div>
+<form asp-action="Submit" asp-controller="Data">
+    <label>User Id</label>
+    <input class="form-control" type="number" placeholder="-1" asp-for="UserId"/>
+
+    <label class="mt-4">Value</label>
+    <input class="form-control" type="text" placeholder="Enter a value" asp-for="Data"/>
+    
+    <button class="btn btn-primary mt-4" type="submit">Submit</button>
+</form>
