@@ -1,20 +1,20 @@
 using Microsoft.AspNetCore.Mvc;
 using TestMVC.Models;
-using TestMVC.Services.DataService;
+using TestMVC.Services.ItemService;
 
 namespace TestMVC.Controllers;
 
-public class DataController(IDataService dataService) : Controller
+public class DataController(IItemService itemService) : Controller
 {
     public async Task<IActionResult> Rand()
     {
-        await dataService.GenerateRandomData();
+        await itemService.GenerateRandomData();
         return RedirectToAction("Index");
     }
 
     public IActionResult Index()
     {
-        var allData = dataService.GetAllData();
+        var allData = itemService.GetAllData();
         return View(allData);
     }
 
@@ -23,9 +23,9 @@ public class DataController(IDataService dataService) : Controller
         return View();
     }
 
-    public IActionResult Submit(TestData request)
+    public IActionResult Submit(UserItems request)
     {
-        dataService.SaveData(request);
+        itemService.SaveData(request);
         return RedirectToAction("Index");
     }
 }

@@ -18,7 +18,7 @@ public class UserService : IUserService
         var user = new User
         {
             Name = request.Name,
-            Data = new List<TestData>()
+            Data = new List<UserItems>()
         };
         await _repository.Insert(user);
         return user;
@@ -41,8 +41,6 @@ public class UserService : IUserService
 
     public Task<User?> GetUserByData(string data)
     {
-#pragma warning disable CS8604 // Possible null reference argument.
-        return Task.FromResult(_repository.GetAll().FirstOrDefault(u => u.Data.Any(d => d.Data == data)));
-#pragma warning restore CS8604 // Possible null reference argument.
+        throw new NotImplementedException();
     }
 }

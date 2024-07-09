@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using TestMVC.Data;
 using TestMVC.Repository;
-using TestMVC.Services.DataService;
+using TestMVC.Services.ItemService;
 using TestMVC.Services.UserService;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,16 +14,31 @@ var builder = WebApplication.CreateBuilder(args);
     {
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "TestMVC API", Version = "v1" });
     });
-
-    builder.Services.AddDbContext<Context>(options =>
+    
+    builder.Services.AddDbContext<AppDbContext>(options =>
     {
-        options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty);
+        options.UseMySQL(builder.Configuration.GetConnectionString("MVCConnection") ?? string.Empty);
     });
 
+    builder.Services.AddIdentity<AppUser, IdentityRole>(
+            options =>
+            {
+                options.Password.RequiredUniqueChars = 0;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredLength = 6;
+            }
+        )
+        .AddEntityFrameworkStores<AppDbContext>()
+        .AddDefaultTokenProviders();
+
     builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-    builder.Services.AddScoped<IDataService, DataService>();
+    builder.Services.AddScoped<IItemService, ItemService>();
     builder.Services.AddScoped<IUserService, UserService>();
 }
+
+builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<AppDbContext>();
 
 var app = builder.Build();
 {

@@ -11,5 +11,5 @@ public class User
     [Required]
     [StringLength(50, ErrorMessage = "Name length can't be more than 50 characters.")]
     public string? Name { get; init; }
-    public ICollection<TestData> Data { get; set; }
+    public ICollection<UserItems> Data { get; set; }
 }
