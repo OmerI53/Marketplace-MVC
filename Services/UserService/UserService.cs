@@ -5,12 +5,12 @@ namespace TestMVC.Services.UserService;
 
 public class UserService : IUserService
 {
-    private readonly IGenericRepository<User> _context;
+    private readonly IGenericRepository<User> _repository;
 
     // ReSharper disable once ConvertToPrimaryConstructor
-    public UserService(IGenericRepository<User> context)
+    public UserService(IGenericRepository<User> repository)
     {
-        _context = context;
+        _repository = repository;
     }
 
     public async Task<User?> CreateUser(User request)
@@ -20,58 +20,29 @@ public class UserService : IUserService
             Name = request.Name,
             Data = new List<TestData>()
         };
-        await _context.Insert(user);
+        await _repository.Insert(user);
         return user;
     }
 
-    public List<User> GetAllUsers()
+    public List<User?> GetAllUsers()
     {
-        /*
-        var result = _context.Users
-            .Select(u => new
-            {
-                User = u,
-                Data = u.Data.Select(d => d.Data)
-            })
-            .ToList()
-            .Select(item =>
-            {
-                item.User.Data = item.Data.Select(x => new TestData { Data = x }).ToList();
-                return item.User;
-            })
-            .ToList();
-        */
-        var result = _context.GetAll()
-            .Select(u => new
-            {
-                User = u,
-                Data = u.Data.Select(d => d.Data)
-            })
-            .ToList()
-            .Select(item =>
-            {
-                item.User.Data = item.Data.Select(x => new TestData { Data = x }).ToList();
-                return item.User;
-            })
-            .ToList();
-
-        return result;
+        return _repository.GetAll().ToList();
     }
 
-    public User? GetUserById(long id)
+    public async Task<User> GetUserById(long id)
     {
-        return _context.GetById(id);
+        return await _repository.GetByIdWithIncludesAsync(id, u => u.Data);
     }
 
     public User? GetUserByName(string name)
     {
-        return _context.GetAll().FirstOrDefault(u => u.Name == name);
+        return _repository.GetAll().FirstOrDefault(u => u.Name == name);
     }
 
-    public async Task<User?> GetUserByData(string data)
+    public Task<User?> GetUserByData(string data)
     {
 #pragma warning disable CS8604 // Possible null reference argument.
-        return _context.GetAll().FirstOrDefault(u => u.Data.Any(d => d.Data == data));
+        return Task.FromResult(_repository.GetAll().FirstOrDefault(u => u.Data.Any(d => d.Data == data)));
 #pragma warning restore CS8604 // Possible null reference argument.
     }
 }

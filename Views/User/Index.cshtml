@@ -2,9 +2,25 @@
     ViewData["Title"] = "Home Page";
 }
 
+@model User
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <a asp-controller="User" asp-action="Collection" class="btn btn-primary">Collection</a>
-    <a asp-controller="Data" asp-action="Index" class="btn btn-primary">Marketplace</a>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4 mt-4">Profile</h1>
+    <h3>@Model.Name</h3>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Value</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Data)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Data</td>
+            </tr>
+        }
+        </tbody>
+    </table>
 </div>

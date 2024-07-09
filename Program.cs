@@ -1,42 +1,48 @@
 using Microsoft.EntityFrameworkCore;
-using TestMVC.Models;
+using Microsoft.OpenApi.Models;
 using TestMVC.Repository;
 using TestMVC.Services.DataService;
 using TestMVC.Services.UserService;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<Context>(options =>
 {
-    options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty);
-});
+    builder.Services.AddControllersWithViews();
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen(c =>
+    {
+        c.SwaggerDoc("v1", new OpenApiInfo { Title = "TestMVC API", Version = "v1" });
+    });
 
-builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-builder.Services.AddScoped<IDataService, DataService>();
-builder.Services.AddScoped<IUserService, UserService>();
+    builder.Services.AddDbContext<Context>(options =>
+    {
+        options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty);
+    });
 
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+    builder.Services.AddScoped<IDataService, DataService>();
+    builder.Services.AddScoped<IUserService, UserService>();
 }
 
-app.UseHttpsRedirection();
-app.UseStaticFiles();
+var app = builder.Build();
+{
+    if (!app.Environment.IsDevelopment())
+    {
+        app.UseExceptionHandler("/Home/Error");
+        app.UseHsts();
+    }
 
-app.UseRouting();
 
-app.UseAuthorization();
+    app.UseHttpsRedirection();
+    app.UseStaticFiles();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    app.UseRouting();
+    app.UseSwagger();
+    app.UseCors();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TestMVC API V1"));
+    app.UseAuthorization();
+    app.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.Run();
+    app.Run();
+}

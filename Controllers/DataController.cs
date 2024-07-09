@@ -4,35 +4,28 @@ using TestMVC.Services.DataService;
 
 namespace TestMVC.Controllers;
 
-public class DataController : Controller
+public class DataController(IDataService dataService) : Controller
 {
-    private readonly IDataService _dataService;
-
-    public DataController(IDataService dataService)
+    public async Task<IActionResult> Rand()
     {
-        _dataService = dataService;
+        await dataService.GenerateRandomData();
+        return RedirectToAction("Index");
     }
 
-    [HttpPost]
-    public IActionResult Rand()
-    {
-        throw new NotImplementedException();
-    }
-    
     public IActionResult Index()
     {
-        return View();
+        var allData = dataService.GetAllData();
+        return View(allData);
     }
-    
+
     public IActionResult Create()
     {
         return View();
     }
 
-    public IActionResult Submit(TestData data)
+    public IActionResult Submit(TestData request)
     {
-        _dataService.SaveData(data);
+        dataService.SaveData(request);
         return RedirectToAction("Index");
     }
-    
 }

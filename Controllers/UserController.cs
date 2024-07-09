@@ -1,16 +1,20 @@
 using Microsoft.AspNetCore.Mvc;
+using TestMVC.Services.UserService;
 
 namespace TestMVC.Controllers;
 
-public class UserController:Controller
+public class UserController : Controller
 {
-    public IActionResult Index()
+    private readonly IUserService _userService;
+
+    public UserController(IUserService userService)
     {
-        return View();
+        _userService = userService;
     }
-    
-    public IActionResult Collection()
+
+    public async Task<IActionResult> Index()
     {
-        return View();
+        var user = await _userService.GetUserById(1);
+        return View(user);
     }
 }

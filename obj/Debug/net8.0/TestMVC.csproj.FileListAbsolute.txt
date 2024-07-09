@@ -9,9 +9,11 @@
 /Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/obj/Debug/net8.0/TestMVC.AssemblyInfoInputs.cache
 /Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/obj/Debug/net8.0/TestMVC.AssemblyInfo.cs
 /Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/obj/Debug/net8.0/TestMVC.csproj.CoreCompileInputs.cache
+/Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/obj/Debug/net8.0/TestMVC.MvcApplicationPartsAssemblyInfo.cs
 /Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/obj/Debug/net8.0/TestMVC.MvcApplicationPartsAssemblyInfo.cache
 /Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/obj/Debug/net8.0/TestMVC.RazorAssemblyInfo.cache
 /Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/obj/Debug/net8.0/TestMVC.RazorAssemblyInfo.cs
+/Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/obj/Debug/net8.0/TestMVC.sourcelink.json
 /Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/obj/Debug/net8.0/staticwebassets.build.json
 /Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/obj/Debug/net8.0/staticwebassets.development.json
 /Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/obj/Debug/net8.0/staticwebassets/msbuild.TestMVC.Microsoft.AspNetCore.StaticWebAssets.props
@@ -35,8 +37,12 @@
 /Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.dll
 /Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.Abstractions.dll
 /Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.Relational.dll
+/Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/bin/Debug/net8.0/Microsoft.OpenApi.dll
 /Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/bin/Debug/net8.0/MySql.Data.dll
 /Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/bin/Debug/net8.0/MySql.EntityFrameworkCore.dll
+/Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/bin/Debug/net8.0/Swashbuckle.AspNetCore.Swagger.dll
+/Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/bin/Debug/net8.0/Swashbuckle.AspNetCore.SwaggerGen.dll
+/Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/bin/Debug/net8.0/Swashbuckle.AspNetCore.SwaggerUI.dll
 /Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/bin/Debug/net8.0/System.Configuration.ConfigurationManager.dll
 /Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/bin/Debug/net8.0/System.Security.Cryptography.ProtectedData.dll
 /Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/bin/Debug/net8.0/System.Security.Permissions.dll

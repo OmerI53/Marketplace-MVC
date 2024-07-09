@@ -1,22 +1,29 @@
 @{
     ViewData["Title"] = "Home Page";
-    
 }
-<script lang="ts">
-    async function randEntry() {
-        const response = await fetch('https://localhost:5058/api/data/rand', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        const data = await response.json();
-        console.log(data);
-    }
-    
-</script>
+
+@model IEnumerable<TestData>
 
 <div class="text-center">
     <h1 class="display-4">Saved Data</h1>
-    <button class="btn btn-primary" onclick="randEntry()">Initialize database</button>
+    <a class="btn btn-primary m-4" asp-action="Rand" asp-controller="Data">Generate Random Data</a>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>User Id</th>
+            <th>Value</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.UserId</td>
+                <td>@item.Data</td>
+            </tr>
+        }
+        </tbody>
+    </table>
 </div>

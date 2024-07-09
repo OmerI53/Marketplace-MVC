@@ -8,4 +8,5 @@ public interface IDataService
     List<TestData?> GetAllData();
     TestData? GetDataById(long id);
     TestData? GetDataByVal(string val);
+    Task GenerateRandomData();
 }
