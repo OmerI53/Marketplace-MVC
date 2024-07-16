@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TestMVC.Models;
 using TestMVC.Services.ItemService;
 
 namespace TestMVC.Controllers;
 
+[Authorize]
 public class DataController(IItemService itemService) : Controller
 {
     public async Task<IActionResult> Rand()

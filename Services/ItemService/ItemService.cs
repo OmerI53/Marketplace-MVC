@@ -42,7 +42,6 @@ public class ItemService(IGenericRepository<UserItems> repository, IUserService 
         {
         };
         await repository.Insert(data);
-        Console.WriteLine($"Generated data for user {user.Name}");
     }
 
     private static string GenerateRandomText(int length)
