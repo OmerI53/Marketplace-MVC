@@ -5,24 +5,24 @@ using TestMVC.Services.UserService;
 
 namespace TestMVC.Services.ItemService;
 
-public class ItemService(IGenericRepository<UserItems> repository, IUserService userService) : IItemService
+public class ItemService(IGenericRepository<Item> repository, IUserService userService) : IItemService
 {
-    public Task<UserItems> SaveData(UserItems request)
+    public Task<Item> CreateItem(Item request)
     {
-        throw new NotImplementedException();
+        return repository.Insert(request);
     }
 
-    public List<UserItems?> GetAllData()
+    public List<Item?> GetAllData()
     {
         return repository.GetAll().ToList();
     }
 
-    public UserItems? GetDataById(long id)
+    public Item? GetDataById(long id)
     {
         return repository.GetById(id);
     }
 
-    public UserItems? GetDataByVal(string val)
+    public Item? GetDataByVal(string val)
     {
         throw new NotImplementedException();
     }
@@ -38,7 +38,7 @@ public class ItemService(IGenericRepository<UserItems> repository, IUserService 
         }
 
         var user = allUsers[random.Next(allUsers.Count)];
-        var data = new UserItems
+        var data = new Item
         {
         };
         await repository.Insert(data);

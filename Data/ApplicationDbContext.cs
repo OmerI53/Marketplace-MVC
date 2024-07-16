@@ -3,9 +3,5 @@ using Microsoft.EntityFrameworkCore;
 
 namespace TestMVC.Data;
 
-public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
-{
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-    {
-    }
-}
+public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+    : IdentityDbContext<ApplicationUser>(options);

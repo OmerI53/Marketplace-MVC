@@ -1,3 +1,4 @@
+using TestMVC.Data;
 using TestMVC.Models;
 using TestMVC.Repository;
 
@@ -5,41 +6,30 @@ namespace TestMVC.Services.UserService;
 
 public class UserService : IUserService
 {
-    private readonly IGenericRepository<User> _repository;
+    private readonly IGenericRepository<ApplicationUser> _repository;
 
     // ReSharper disable once ConvertToPrimaryConstructor
-    public UserService(IGenericRepository<User> repository)
+    public UserService(IGenericRepository<ApplicationUser> repository)
     {
         _repository = repository;
     }
 
-    public async Task<User?> CreateUser(User request)
-    {
-        var user = new User
-        {
-            Name = request.Name,
-            Data = new List<UserItems>()
-        };
-        await _repository.Insert(user);
-        return user;
-    }
-
-    public List<User?> GetAllUsers()
+    public List<ApplicationUser?> GetAllUsers()
     {
         return _repository.GetAll().ToList();
     }
 
-    public async Task<User> GetUserById(long id)
+    public async Task<ApplicationUser> GetUserById(long id)
     {
-        return await _repository.GetByIdWithIncludesAsync(id, u => u.Data);
+        return await _repository.GetByIdWithIncludesAsync(id, u => u.Items ?? new List<Item>());
     }
 
-    public User? GetUserByName(string name)
+    public ApplicationUser? GetUserByName(string name)
     {
-        return _repository.GetAll().FirstOrDefault(u => u.Name == name);
+        return _repository.GetAll().FirstOrDefault(u => u!.Name == name);
     }
 
-    public Task<User?> GetUserByData(string data)
+    public Task<ApplicationUser?> GetUserByData(string data)
     {
         throw new NotImplementedException();
     }

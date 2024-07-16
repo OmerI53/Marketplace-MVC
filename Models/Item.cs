@@ -1,10 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using TestMVC.Data;
 
 namespace TestMVC.Models;
 
-[Table("data")]
-public class UserItems
+[Table("item")]
+public class Item
 {
     public long? Id { get; set; }
 
@@ -16,4 +17,8 @@ public class UserItems
     public string? Description { get; set; }
 
     [Required] public long? ItemPrice { get; set; }
+
+    public long? ApplicationUserId { get; set; }
+
+    [ForeignKey("ApplicationUserId")] public ApplicationUser? ApplicationUser { get; set; }
 }

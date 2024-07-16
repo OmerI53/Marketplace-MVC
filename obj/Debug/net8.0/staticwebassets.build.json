@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "mtNUaKW+K44gJYUkVPSOq/I3Dzrtr5yNBL2UsadzqHE=",
+  "Hash": "kmyxc7YT5Q3ICfeEYwmbXlEU0gTYWRbLP63ESjuU3nM=",
   "Source": "TestMVC",
   "BasePath": "_content/TestMVC",
   "Mode": "Default",
@@ -1214,12 +1214,12 @@
       "OriginalItemSpec": "wwwroot/css/site.css"
     },
     {
-      "Identity": "/Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/wwwroot/favicon.ico",
+      "Identity": "/Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/wwwroot/favicon.png",
       "SourceId": "TestMVC",
       "SourceType": "Discovered",
       "ContentRoot": "/Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/wwwroot/",
       "BasePath": "_content/TestMVC",
-      "RelativePath": "favicon.ico",
+      "RelativePath": "favicon.png",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -1230,7 +1230,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot/favicon.ico"
+      "OriginalItemSpec": "wwwroot/favicon.png"
     },
     {
       "Identity": "/Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/wwwroot/js/site.js",

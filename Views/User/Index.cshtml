@@ -2,7 +2,7 @@
     ViewData["Title"] = "Home Page";
 }
 
-@model User
+@model TestMVC.Data.ApplicationUser
 <div class="text-center">
     <h1 class="display-4 mt-4">Profile</h1>
     <h3>@Model.Name</h3>
@@ -14,7 +14,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach (var item in Model.Data)
+        @foreach (var item in Model.Items)
         {
             <tr>
                 <td>@item.Id</td>

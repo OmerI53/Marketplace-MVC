@@ -4,7 +4,7 @@ namespace TestMVC.Services.ItemService;
 
 public interface IItemService
 {
-    Task<UserItems> SaveData(UserItems request);
-    List<UserItems?> GetAllData();
+    Task<Item> CreateItem(Item request);
+    List<Item?> GetAllData();
     Task GenerateRandomData();
 }

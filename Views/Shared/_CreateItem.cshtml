@@ -1,0 +1,17 @@
+@model TestMVC.Models.Item
+
+<form asp-action="SubmitItem" asp-controller="Admin">
+    <div class="text-center">
+        <label>Create new Item</label>
+    </div>
+    <label class="mt-4">Item Name</label>
+    <input class="form-control" type="text" asp-for="ItemName" placeholder="Enter item name"/>
+
+    <label class="mt-4">Description</label>
+    <input class="form-control" type="text" asp-for="Description" placeholder="Enter item description"/>
+
+    <label class="mt-4">Item Price</label>
+    <input class="form-control" type="number" asp-for="ItemPrice" placeholder="Enter item price"/>
+
+    <button class="btn btn-primary mt-4" type="submit">Submit</button>
+</form>

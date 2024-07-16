@@ -111,28 +111,28 @@ namespace TestMVC.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return Page();
+            
+            var user = CreateUser();
+
+            user.Name = Input.Name;
+            user.Surname = Input.Surname;
+            
+            await _userStore.SetUserNameAsync(user,user.Name+user.Surname, CancellationToken.None);
+            await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+            var result = await _userManager.CreateAsync(user, Input.Password);
+
+            if (result.Succeeded)
             {
-                var user = CreateUser();
+                _logger.LogInformation("User created a new account with password.");
+                await _userManager.AddToRoleAsync(user, "User");
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                return LocalRedirect(returnUrl);
+            }
 
-                user.Name = Input.Name;
-                user.Surname = Input.Surname;
-
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-                var result = await _userManager.CreateAsync(user, Input.Password);
-
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("User created a new account with password.");
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return LocalRedirect(returnUrl);
-                }
-
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
             }
 
             // If we got this far, something failed, redisplay form
