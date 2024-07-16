@@ -10,12 +10,12 @@ public class ItemController(IItemService itemService) : Controller
     public async Task<IActionResult> Rand()
     {
         await itemService.GenerateRandomData();
-        return RedirectToAction("Index");
+        return RedirectToAction("Index","Admin");
     }
 
     public IActionResult Index()
     {
-        var allData = itemService.GetAllData();
+        var allData = itemService.GetAllItems();
         return View(allData);
     }
 }

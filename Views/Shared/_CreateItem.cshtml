@@ -7,11 +7,31 @@
     <label class="mt-4">Item Name</label>
     <input class="form-control" type="text" asp-for="ItemName" placeholder="Enter item name"/>
 
+    <label class="mt-4">Category</label>
+    <select class="form-control" asp-for="Category">
+        @foreach (var category in Enum.GetValues(typeof(Category)))
+        {
+            <option value="@category">@category</option>
+        }
+    </select>
+
     <label class="mt-4">Description</label>
     <input class="form-control" type="text" asp-for="Description" placeholder="Enter item description"/>
 
     <label class="mt-4">Item Price</label>
     <input class="form-control" type="number" asp-for="ItemPrice" placeholder="Enter item price"/>
 
-    <button class="btn btn-primary mt-4" type="submit">Submit</button>
+    <div class="col">
+        <button class="btn btn-primary mt-4" type="submit">Submit</button>
+        <a class="btn btn-primary mt-4 red-link" asp-action="Rand" asp-controller="Item">Generate Random</a>
+    </div>
+
 </form>
+
+<style>
+    .red-link {
+        background-color: red !important; /* Set background color to red */
+        border-color: red !important; /* Set border color to red */
+        color: white !important; /* Set text color to white */
+    }
+</style>

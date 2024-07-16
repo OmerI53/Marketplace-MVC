@@ -10,9 +10,9 @@ using TestMVC.Data;
 
 namespace TestMVC.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240716052507_AddUserItemsRelationship")]
-    partial class AddUserItemsRelationship
+    [DbContext(typeof(AppDbContext))]
+    [Migration("20240716111047_categories")]
+    partial class categories
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,6 +21,21 @@ namespace TestMVC.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("ItemUser", b =>
+                {
+                    b.Property<long>("ItemsId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("UsersId")
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("ItemsId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("UserItems", (string)null);
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -154,7 +169,7 @@ namespace TestMVC.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("TestMVC.Data.ApplicationUser", b =>
+            modelBuilder.Entity("TestMVC.Data.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
@@ -232,9 +247,8 @@ namespace TestMVC.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    b.Property<string>("ApplicationUserId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
+                    b.Property<int>("Category")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasMaxLength(300)
@@ -251,9 +265,22 @@ namespace TestMVC.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId");
+                    b.ToTable("item");
+                });
 
-                    b.ToTable("data");
+            modelBuilder.Entity("ItemUser", b =>
+                {
+                    b.HasOne("TestMVC.Models.Item", null)
+                        .WithMany()
+                        .HasForeignKey("ItemsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TestMVC.Data.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -267,7 +294,7 @@ namespace TestMVC.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("TestMVC.Data.ApplicationUser", null)
+                    b.HasOne("TestMVC.Data.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -276,7 +303,7 @@ namespace TestMVC.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("TestMVC.Data.ApplicationUser", null)
+                    b.HasOne("TestMVC.Data.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -291,7 +318,7 @@ namespace TestMVC.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TestMVC.Data.ApplicationUser", null)
+                    b.HasOne("TestMVC.Data.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -300,27 +327,11 @@ namespace TestMVC.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("TestMVC.Data.ApplicationUser", null)
+                    b.HasOne("TestMVC.Data.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("TestMVC.Models.Item", b =>
-                {
-                    b.HasOne("TestMVC.Data.ApplicationUser", "ApplicationUser")
-                        .WithMany("Items")
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUser");
-                });
-
-            modelBuilder.Entity("TestMVC.Data.ApplicationUser", b =>
-                {
-                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }

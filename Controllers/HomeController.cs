@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TestMVC.Models;
+using TestMVC.Services.ItemService;
 
 namespace TestMVC.Controllers;
 
@@ -9,17 +10,41 @@ namespace TestMVC.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly IItemService _itemService;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger, IItemService itemService)
     {
         _logger = logger;
+        _itemService = itemService;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
     {
-        return View();
+        string? searchQuery = Request.Query["searchQuery"];
+        ViewData["SearchQuery"] = searchQuery;
+
+        var itemsQuery = await _itemService.GetItemsAlike(searchQuery);
+
+        if (itemsQuery == null)
+        {
+            return View(new List<Item>());
+        }
+
+        var enumerable = itemsQuery.ToList();
+        var paginatedItems = enumerable
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+        var totalItems = enumerable.Count;
+        var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+
+        ViewBag.TotalPages = totalPages;
+        ViewBag.CurrentPage = page;
+
+        return View(paginatedItems);
     }
-    
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {

@@ -11,9 +11,9 @@ namespace TestMVC.Controllers;
 public class AdminController : Controller
 {
     private readonly IItemService _itemService;
-    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly UserManager<User> _userManager;
 
-    public AdminController(IItemService itemService, UserManager<ApplicationUser> userManager)
+    public AdminController(IItemService itemService, UserManager<User> userManager)
     {
         _itemService = itemService;
         _userManager = userManager;
@@ -24,9 +24,10 @@ public class AdminController : Controller
         return View();
     }
 
-    public void SubmitItem(Item item)
+    public async Task<IActionResult> SubmitItem(Item item)
     {
-        _itemService.CreateItem(item);
+        await _itemService.CreateItem(item);
+        return View("Index");
     }
 
     [HttpPost]

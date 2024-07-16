@@ -6,30 +6,30 @@ namespace TestMVC.Services.UserService;
 
 public class UserService : IUserService
 {
-    private readonly IGenericRepository<ApplicationUser> _repository;
+    private readonly IGenericRepository<User> _repository;
 
     // ReSharper disable once ConvertToPrimaryConstructor
-    public UserService(IGenericRepository<ApplicationUser> repository)
+    public UserService(IGenericRepository<User> repository)
     {
         _repository = repository;
     }
 
-    public List<ApplicationUser?> GetAllUsers()
+    public List<User?> GetAllUsers()
     {
         return _repository.GetAll().ToList();
     }
 
-    public async Task<ApplicationUser> GetUserById(long id)
+    public async Task<User> GetUserById(long id)
     {
         return await _repository.GetByIdWithIncludesAsync(id, u => u.Items ?? new List<Item>());
     }
 
-    public ApplicationUser? GetUserByName(string name)
+    public User? GetUserByName(string name)
     {
         return _repository.GetAll().FirstOrDefault(u => u!.Name == name);
     }
 
-    public Task<ApplicationUser?> GetUserByData(string data)
+    public Task<User?> GetUserByData(string data)
     {
         throw new NotImplementedException();
     }

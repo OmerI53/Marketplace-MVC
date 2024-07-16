@@ -1,9 +1,54 @@
-﻿@{
+﻿@model ICollection<TestMVC.Models.Item>
+
+@{
     ViewData["Title"] = "Home Page";
+    var searchQuery = ViewData["SearchQuery"]?.ToString();
+    int totalPages = ViewBag.TotalPages;
+    int currentPage = ViewBag.CurrentPage;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Homepage</h1>
-    <a asp-controller="Item" asp-action="Index" class="btn btn-primary mt-4">Saved Data</a>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+<div class="d-flex justify-content-center">
+    <form method="get" class="form-inline">
+        <input type="text" name="searchQuery" value="@searchQuery" placeholder="Search..." class="form-control"/>
+        <button type="submit" class="btn btn-primary ml-2">
+            <i class="fas fa-search"></i>
+        </button>
+    </form>
+</div>
+
+<br/>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Item Name</th>
+        <th>Description</th>
+        <th>Category</th>
+        <th>Item Price</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.ItemName</td>
+            <td>@item.Description</td>
+            <td>@item.Category.ToString()</td>
+            <td>@item.ItemPrice</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<div class="d-flex justify-content-center">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            @for (var i = 1; i <= totalPages; i++)
+            {
+                <li class="page-item @(i == currentPage ? "active" : "")">
+                    <a class="page-link" href="?page=@i&searchQuery=@searchQuery">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
 </div>

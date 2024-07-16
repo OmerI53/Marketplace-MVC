@@ -4,8 +4,10 @@ using TestMVC.Models;
 
 namespace TestMVC.Data;
 
-public class ApplicationUser : IdentityUser
+public class User : IdentityUser
 {
+    
+    
     [PersonalData]
     [Column(TypeName = "nvarchar(50)")]
     public required string Name { get; set; }
@@ -16,5 +18,5 @@ public class ApplicationUser : IdentityUser
     public required string Surname { get; set; }
     
     // ReSharper disable once PropertyCanBeMadeInitOnly.Global
-    public List<Item>? Items { get; set; }
+    public ICollection<Item>? Items { get; set; }
 }

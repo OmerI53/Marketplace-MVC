@@ -5,8 +5,8 @@ namespace TestMVC.Services.UserService;
 
 public interface IUserService
 {
-    List<ApplicationUser?> GetAllUsers();
-    Task<ApplicationUser> GetUserById(long id);
-    ApplicationUser? GetUserByName(string name);
-    Task<ApplicationUser?> GetUserByData(string data);
+    List<User?> GetAllUsers();
+    Task<User> GetUserById(long id);
+    User? GetUserByName(string name);
+    Task<User?> GetUserByData(string data);
 }

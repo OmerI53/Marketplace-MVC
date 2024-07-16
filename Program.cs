@@ -13,18 +13,18 @@ var builder = WebApplication.CreateBuilder(args);
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "TestMVC API", Version = "v1" });
     });
 
-    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    builder.Services.AddDbContext<AppDbContext>(options =>
     {
         options.UseMySQL(builder.Configuration.GetConnectionString("MVCConnection") ?? string.Empty);
     });
 
-    builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
+    builder.Services.AddDefaultIdentity<User>(options =>
         {
             options.SignIn.RequireConfirmedAccount = false;
             options.SignIn.RequireConfirmedEmail = false;
         })
         .AddRoles<IdentityRole>()
-        .AddEntityFrameworkStores<ApplicationDbContext>();
+        .AddEntityFrameworkStores<AppDbContext>();
 
     builder.Services.AddControllersWithViews();
     builder.Services.AddRazorPages();
@@ -77,7 +77,7 @@ var app = builder.Build();
 
     using (var adminScope = app.Services.CreateScope())
     {
-        var userManager = adminScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+        var userManager = adminScope.ServiceProvider.GetRequiredService<UserManager<User>>();
 
         const string email = "admin@admin.com";
         const string password = "Admin123!";
@@ -85,7 +85,7 @@ var app = builder.Build();
         {
             if (await userManager.FindByEmailAsync(email) == null)
             {
-                var user = new ApplicationUser
+                var user = new User
                 {
                     Name = "Admin",
                     Surname = "0",

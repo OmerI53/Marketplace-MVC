@@ -1,60 +1,87 @@
-using System.Text;
+using Bogus;
 using TestMVC.Models;
 using TestMVC.Repository;
-using TestMVC.Services.UserService;
 
 namespace TestMVC.Services.ItemService;
 
-public class ItemService(IGenericRepository<Item> repository, IUserService userService) : IItemService
+public class ItemService(IGenericRepository<Item> repository) : IItemService
 {
     public Task<Item> CreateItem(Item request)
     {
         return repository.Insert(request);
     }
 
-    public List<Item?> GetAllData()
+    public List<Item> GetAllItems()
     {
-        return repository.GetAll().ToList();
-    }
-
-    public Item? GetDataById(long id)
-    {
-        return repository.GetById(id);
-    }
-
-    public Item? GetDataByVal(string val)
-    {
-        throw new NotImplementedException();
+        return repository.GetAll()!.ToList();
     }
 
     public async Task GenerateRandomData()
     {
         var random = new Random();
-        var allUsers = userService.GetAllUsers();
-        if (allUsers.Count == 0)
-        {
-            Console.WriteLine("No users found");
-            return;
-        }
+        var vals = Enum.GetValues(typeof(Category));
+        var cat = (Category)vals.GetValue(random.Next(vals.Length));
 
-        var user = allUsers[random.Next(allUsers.Count)];
-        var data = new Item
+        var faker = new Faker();
+
+        var item = new Item
         {
+            ItemName = GenerateItemName(faker, cat),
+            Description = GenerateDescription(faker, cat),
+            ItemPrice = GeneratePrice(faker, cat),
+            Category = cat
         };
-        await repository.Insert(data);
+
+        await repository.Insert(item);
     }
 
-    private static string GenerateRandomText(int length)
+    public async Task<IEnumerable<Item>?> GetItemsAlike(string? searchQuery)
     {
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        var result = new StringBuilder(length);
-        var random = new Random();
-
-        for (var i = 0; i < length; i++)
+        if (searchQuery == null)
         {
-            result.Append(chars[random.Next(chars.Length)]);
+            return repository.GetAll();
         }
 
-        return result.ToString();
+        return await repository.FindAsync(x => x.ItemName.Contains(searchQuery));
     }
+
+    #region Generate Random Data
+
+    private static string GenerateItemName(Faker faker, Category category)
+    {
+        return category switch
+        {
+            Category.Device => faker.Commerce.ProductName(),
+            Category.Clothes => faker.Commerce.ProductMaterial(),
+            Category.Food => faker.Commerce.ProductAdjective() + " Food",
+            Category.Other => faker.Commerce.ProductName(),
+            _ => "Unknown Item"
+        };
+    }
+
+    private static string GenerateDescription(Faker faker, Category category)
+    {
+        return category switch
+        {
+            Category.Device => faker.Commerce.ProductDescription(),
+            Category.Clothes => faker.Commerce.ProductDescription(),
+            Category.Food => faker.Commerce.ProductDescription(),
+            Category.Other => faker.Commerce.ProductDescription(),
+            _ => "No Description"
+        };
+    }
+
+    private static int GeneratePrice(Faker faker, Category category)
+    {
+        return category switch
+        {
+            Category.Device => faker.Random.Int(300, 2000),
+            Category.Clothes => faker.Random.Int(20, 500),
+            Category.Food => faker.Random.Int(5, 100),
+            Category.Other => faker.Random.Int(10, 300),
+            _ => faker.Random.Int(1, 1000)
+        };
+    }
+
+    #endregion
 }
