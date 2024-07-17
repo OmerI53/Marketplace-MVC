@@ -29,12 +29,7 @@ public class ItemController(IItemService itemService) : Controller
         }
         return View(item);
     }
-
-    public IActionResult Sell()
-    {
-        return View();
-    }
-
+    
     [HttpGet]
     public async Task<List<Item>> GetItemsByCategory([FromQuery] string? category)
     {

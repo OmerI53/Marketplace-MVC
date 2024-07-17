@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using TestMVC.Data;
 using TestMVC.Models;
 
-namespace TestMVC.Data;
+namespace TestMVC.Repository;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options)
     : IdentityDbContext<User>(options)

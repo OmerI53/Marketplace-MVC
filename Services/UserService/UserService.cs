@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using TestMVC.Data;
 using TestMVC.Models;
 using TestMVC.Repository;
@@ -19,9 +21,33 @@ public class UserService : IUserService
         return _repository.GetAll().ToList();
     }
 
-    public async Task<User> GetUserById(long id)
+    public User? GetUserById(string? id)
     {
-        return await _repository.GetByIdWithIncludesAsync(id, u => u.UserItems ?? new List<UserItem>());
+        var set = _repository.GetSet();
+        //TODO: Ask if there is a better way to do this
+        var users = set.Include(u => u.UserItems)
+            .ThenInclude(ui => ui.Item)
+            .Select(u => new User
+            {
+                Id = u.Id,
+                Name = u.Name,
+                UserItems = u.UserItems.Select(ui => new UserItem
+                {
+                    ItemId = ui.ItemId,
+                    UserId = ui.UserId,
+                    Quantity = ui.Quantity,
+                    Price = ui.Price,
+                    Item = new Item
+                    {
+                        Id = ui.Item.Id,
+                        ItemName = ui.Item.ItemName,
+                        Description = ui.Item.Description,
+                        InStock = ui.Item.InStock,
+                        Category = ui.Item.Category
+                    }
+                }).ToList()
+            }).FirstOrDefault(u => u.Id == id);
+        return users;
     }
 
     public User? GetUserByName(string name)

@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using TestMVC.Data;
+using TestMVC.Models;
 
 namespace TestMVC.Repository;
 
@@ -21,7 +22,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         return _set.ToList();
     }
 
-    public T? GetById(long id)
+    public T? GetById(object? id)
     {
         return _set.Find(id);
     }
@@ -33,6 +34,12 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         return Task.FromResult(result.Entity);
     }
 
+    public void Delete(T t)
+    {
+        _set.Remove(t);
+        SaveChanges();
+    }
+
     public void DeleteById(long id)
     {
         var entity = _set.Find(id);
@@ -42,6 +49,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     public void Update(T t)
     {
         _set.Update(t);
+        SaveChanges();
     }
 
     public void SaveChanges()
@@ -54,15 +62,16 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         return await _set.Where(predicate).ToListAsync();
     }
 
-    public async Task<T> GetByIdWithIncludesAsync(long id, params Expression<Func<T, object>>[] includes)
+    public async Task<T> GetByIdWithIncludesAsync(string? id, params Expression<Func<T, object>>[] includes)
     {
-        var query = includes.Aggregate<Expression<Func<T, object>>?, IQueryable<T>>(_set, (current, include) =>
-        {
-            Debug.Assert(include != null, nameof(include) + " != null");
-            return current.Include(include);
-        });
+        var query = _set.AsQueryable();
 
-        return (await query.SingleOrDefaultAsync(e => EF.Property<int>(e, "Id") == id))!;
+        foreach (var include in includes)
+        {
+            query = query.Include(include);
+        }
+
+        return await query.SingleOrDefaultAsync(e => EF.Property<string>(e, "Id") == id);
     }
 
     public async Task<IEnumerable<T>> GetAllWithIncludesAsync(params Expression<Func<T, object>>[] includes)
@@ -84,5 +93,15 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     public void ExecuteRawSql(string sql, params object[] parameters)
     {
         _context.Database.ExecuteSqlRaw(sql, parameters);
+    }
+
+    public DbSet<T> GetSet()
+    {
+        return _set;
+    }
+
+    public AppDbContext GetContext()
+    {
+        return _context;
     }
 }

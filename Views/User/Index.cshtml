@@ -3,23 +3,80 @@
 }
 
 @model TestMVC.Data.User
-<div class="text-center">
+<script>
+    function changeQuantity(itemId, increase) {
+        fetch(`/UserItem/ChangeQuantity?itemId=${itemId}&increase=${increase}`, { method: 'POST' })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                }
+                return response.json();
+            });
+        }
+</script>
+
+<div class="text-center container">
     <h1 class="display-4 mt-4">Profile</h1>
     <h3>@Model.Name</h3>
     <table class="table">
         <thead>
         <tr>
-            <th>Id</th>
-            <th>Value</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
         @foreach (var item in Model.UserItems)
         {
             <tr>
-                <td>@item.ItemId</td>
+                <td>@item.Item.ItemName</td>
+                <td>@item.Item.Category</td>
+                <td>@item.Price</td>
+                <td>@item.Quantity</td>
+                <td>
+                    <div class="flex-row">
+                        <button class="btn btn-primary btn-sm" onclick="changeQuantity('@item.ItemId', true)">+</button>
+                        <button class="btn btn-danger btn-sm" onclick="changeQuantity('@item.ItemId', false)">-</button>
+                    </div>
+                </td>
             </tr>
         }
         </tbody>
     </table>
+    <br/>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Sell Items
+    </button>
 </div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Sell Item</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body justify-content-center">
+                @await Html.PartialAsync("_SellItem")
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .btn-sm {
+        padding: 3px 6px; /* Reduced padding */
+        font-size: 10px; /* Reduced font size */
+    }
+
+    .btn-danger {
+        background-color: red;
+        color: white;
+    }
+</style>

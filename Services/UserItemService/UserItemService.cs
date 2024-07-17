@@ -1,4 +1,3 @@
-using Microsoft.Data.SqlClient;
 using TestMVC.Models;
 using TestMVC.Repository;
 
@@ -14,8 +13,15 @@ public class UserItemService : IUserItemService
         _repository = repository;
     }
 
-    public void CreateUserItem(CreateUserItemModel request, string? userId)
+    public bool CreateUserItem(CreateUserItemModel request, string? userId)
     {
+        var exists = _repository.FindAsync(item => item.ItemId == request.Id && item.UserId == userId).Result
+            .FirstOrDefault();
+        if (exists != null)
+        {
+            return false;
+        }
+
         var userItem = new UserItem
         {
             ItemId = request.Id,
@@ -25,5 +31,33 @@ public class UserItemService : IUserItemService
         };
 
         _repository.Insert(userItem);
+        return true;
+    }
+
+    public bool ChangeQuantity(long itemId, string? userId, bool increase)
+    {
+        var userItem = _repository.FindAsync(x => x.ItemId == itemId && x.UserId == userId).Result.FirstOrDefault();
+
+        if (userItem == null)
+        {
+            return false;
+        }
+
+        if (increase)
+        {
+            userItem.Quantity++;
+        }
+        else
+        {
+            userItem.Quantity--;
+            if (userItem.Quantity <= 0)
+            {
+                _repository.Delete(userItem);
+                return true;
+            }
+        }
+
+        _repository.Update(userItem);
+        return true;
     }
 }

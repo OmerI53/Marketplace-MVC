@@ -4,5 +4,6 @@ namespace TestMVC.Services.UserItemService;
 
 public interface IUserItemService
 {
-    void CreateUserItem(CreateUserItemModel itemId, string? userId);
+    bool CreateUserItem(CreateUserItemModel itemId, string? userId);
+    bool ChangeQuantity(long itemId, string? userId, bool increase);
 }

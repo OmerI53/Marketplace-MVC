@@ -16,7 +16,25 @@ public class UserItemController : Controller
     public IActionResult Create(CreateUserItemModel request)
     {
         var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-        _service.CreateUserItem(request, userId);
-        return RedirectToAction("Index", "Home");
+        var success = _service.CreateUserItem(request, userId);
+        if (!success)
+        {
+            ModelState.AddModelError("exists","Item already exists in cart");
+        }
+        return RedirectToAction("Index", "User");
+    }
+
+
+    [HttpPost]
+    public IActionResult ChangeQuantity(long itemId, bool increase)
+    {
+        var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        var result = _service.ChangeQuantity(itemId, userId, increase);
+        if (result == false)
+        {
+            return NotFound();
+        }
+
+        return Ok();
     }
 }
