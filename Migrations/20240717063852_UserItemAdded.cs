@@ -7,7 +7,7 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace TestMVC.Migrations
 {
     /// <inheritdoc />
-    public partial class ManyToManyRelation : Migration
+    public partial class UserItemAdded : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -59,18 +59,19 @@ namespace TestMVC.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "item",
+                name: "Item",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Category = table.Column<int>(type: "int", nullable: false),
                     ItemName = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: true),
-                    ItemPrice = table.Column<long>(type: "bigint", nullable: false)
+                    InStock = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_item", x => x.Id);
+                    table.PrimaryKey("PK_Item", x => x.Id);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -189,22 +190,24 @@ namespace TestMVC.Migrations
                 name: "UserItems",
                 columns: table => new
                 {
-                    ItemsId = table.Column<long>(type: "bigint", nullable: false),
-                    UsersId = table.Column<string>(type: "varchar(255)", nullable: false)
+                    ItemId = table.Column<long>(type: "bigint", nullable: false),
+                    UserId = table.Column<string>(type: "varchar(255)", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<float>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserItems", x => new { x.ItemsId, x.UsersId });
+                    table.PrimaryKey("PK_UserItems", x => new { x.ItemId, x.UserId });
                     table.ForeignKey(
-                        name: "FK_UserItems_AspNetUsers_UsersId",
-                        column: x => x.UsersId,
+                        name: "FK_UserItems_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserItems_item_ItemsId",
-                        column: x => x.ItemsId,
-                        principalTable: "item",
+                        name: "FK_UserItems_Item_ItemId",
+                        column: x => x.ItemId,
+                        principalTable: "Item",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -248,9 +251,9 @@ namespace TestMVC.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserItems_UsersId",
+                name: "IX_UserItems_UserId",
                 table: "UserItems",
-                column: "UsersId");
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -281,7 +284,7 @@ namespace TestMVC.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "item");
+                name: "Item");
         }
     }
 }

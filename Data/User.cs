@@ -6,17 +6,13 @@ namespace TestMVC.Data;
 
 public class User : IdentityUser
 {
-    
-    
     [PersonalData]
     [Column(TypeName = "nvarchar(50)")]
-    public required string Name { get; set; }
-
+    public string Name { get; set; }
 
     [PersonalData]
     [Column(TypeName = "nvarchar(50)")]
-    public required string Surname { get; set; }
-    
-    // ReSharper disable once PropertyCanBeMadeInitOnly.Global
-    public ICollection<Item>? Items { get; set; }
+    public string Surname { get; set; }
+
+    public ICollection<UserItem> UserItems { get; set; } = new List<UserItem>();
 }

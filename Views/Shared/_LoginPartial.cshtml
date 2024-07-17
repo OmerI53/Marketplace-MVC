@@ -14,7 +14,6 @@
         }
     });
 </script>
-
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
@@ -22,6 +21,16 @@
             <a id="manage" class="nav-link text-dark" asp-controller="Home" asp-action="Index">@UserManager.GetUserName(User)</a>
         </li>
         <li class="nav-item">
+            <a id="manage" class="nav-link text-dark" asp-controller="Item" asp-action="Sell">Sell</a>
+        </li>
+        @if (await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User) ?? new User(), "Admin"))
+        {
+            <li class="nav-item">
+                <a id="manage" class="nav-link text-dark" asp-controller="Admin" asp-action="Index">Admin Panel</a>
+            </li>
+        }
+
+        <li class="nav-item ml-auto">
             <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                 <button id="logout" type="submit" class="nav-link btn btn-link text-dark border-0">Logout</button>
             </form>

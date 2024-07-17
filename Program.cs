@@ -4,6 +4,7 @@ using Microsoft.OpenApi.Models;
 using TestMVC.Data;
 using TestMVC.Repository;
 using TestMVC.Services.ItemService;
+using TestMVC.Services.UserItemService;
 using TestMVC.Services.UserService;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,6 +34,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
     builder.Services.AddScoped<IItemService, ItemService>();
     builder.Services.AddScoped<IUserService, UserService>();
+    builder.Services.AddScoped<IUserItemService, UserItemService>();
 }
 
 var app = builder.Build();
@@ -64,7 +66,7 @@ var app = builder.Build();
     {
         var roleManager = roleScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-        string[] roleNames = ["Admin", "User","PremiumUser"];
+        string[] roleNames = ["Admin", "User", "PremiumUser"];
         foreach (var roleName in roleNames)
         {
             var roleExist = await roleManager.RoleExistsAsync(roleName);

@@ -28,7 +28,7 @@ public class ItemService(IGenericRepository<Item> repository) : IItemService
         {
             ItemName = GenerateItemName(faker, cat),
             Description = GenerateDescription(faker, cat),
-            ItemPrice = GeneratePrice(faker, cat),
+
             Category = cat
         };
 
@@ -43,6 +43,22 @@ public class ItemService(IGenericRepository<Item> repository) : IItemService
         }
 
         return await repository.FindAsync(x => x.ItemName.Contains(searchQuery));
+    }
+
+    public Item? GetItemById(long id)
+    {
+        return repository.GetById(id);
+    }
+
+    public async Task<IEnumerable<Item>> GetItemsByCategory(string? category)
+    {
+        if (category == null)
+        {
+            return new List<Item>();
+        }
+
+        var c = Enum.Parse(typeof(Category), category);
+        return await repository.FindAsync(x => x.Category.Equals(c));
     }
 
     #region Generate Random Data

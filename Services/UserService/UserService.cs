@@ -21,7 +21,7 @@ public class UserService : IUserService
 
     public async Task<User> GetUserById(long id)
     {
-        return await _repository.GetByIdWithIncludesAsync(id, u => u.Items ?? new List<Item>());
+        return await _repository.GetByIdWithIncludesAsync(id, u => u.UserItems ?? new List<UserItem>());
     }
 
     public User? GetUserByName(string name)

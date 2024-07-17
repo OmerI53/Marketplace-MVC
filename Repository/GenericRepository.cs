@@ -80,4 +80,9 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         return await _set.Select(selector).ToListAsync();
     }
+
+    public void ExecuteRawSql(string sql, params object[] parameters)
+    {
+        _context.Database.ExecuteSqlRaw(sql, parameters);
+    }
 }

@@ -1,0 +1,57 @@
+@{
+    var categories = Enum.GetValues(typeof(Category));
+    var items = new List<Item>();
+}
+
+<script>
+    function updateItemsDropdown() {
+        let category = $('#categorySelect').val();
+        fetch(`/Item/GetItemsByCategory?category=${category}`)
+            .then(response => response.json())
+            .then(data => {
+                let itemSelect = $('#itemSelect');
+                itemSelect.empty();
+                itemSelect.append($('<option>').val('').text('Select an Item'));
+                data.forEach(function (item) {
+                    itemSelect.append($('<option>').val(item.id).text(item.itemName));
+                });
+            });
+    }
+</script>
+
+<div class="container mt-4 main">
+    <form asp-action="Create" asp-controller="UserItem" class="col">
+        <div class="form-group w-25">
+            <label for="categorySelect">Category</label>
+            <select id="categorySelect" name="Category" class="form-control" onchange="updateItemsDropdown()">
+                <option value="">Select a Category</option>
+                @foreach (var c in categories)
+                {
+                    <option value="@c">@c</option>
+                }
+            </select>
+        </div>
+        <div class="form-group w-25">
+            <label for="itemSelect">Item</label>
+            <select id="itemSelect" name="Id" class="form-control">
+                <option>Select an Item</option>
+                @foreach (var i in items)
+                {
+                    <option value="@i.Id">@i.ItemName</option>
+                }
+            </select>
+        </div>
+        <div class="form-group w-25">
+            <label for="quantityInput">Quantity</label>
+            <input type="number" id="quantityInput" name = "Quantity" class="form-control" min="1" value="1"/>
+        </div>
+        <div class="form-group w-25">
+            <label for="priceInput">Price</label>
+            <input type="number" id="priceInput" name="Price" class="form-control" min="0" value="0"/>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<style>
+</style>

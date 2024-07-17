@@ -11,8 +11,8 @@ using TestMVC.Data;
 namespace TestMVC.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240716111047_categories")]
-    partial class categories
+    [Migration("20240717063852_UserItemAdded")]
+    partial class UserItemAdded
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,21 +21,6 @@ namespace TestMVC.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
-
-            modelBuilder.Entity("ItemUser", b =>
-                {
-                    b.Property<long>("ItemsId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("UsersId")
-                        .HasColumnType("varchar(255)");
-
-                    b.HasKey("ItemsId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("UserItems", (string)null);
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -254,33 +239,40 @@ namespace TestMVC.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("varchar(300)");
 
+                    b.Property<bool>("InStock")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("ItemName")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<long?>("ItemPrice")
-                        .IsRequired()
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
 
-                    b.ToTable("item");
+                    b.ToTable("Item");
                 });
 
-            modelBuilder.Entity("ItemUser", b =>
+            modelBuilder.Entity("TestMVC.Models.UserItem", b =>
                 {
-                    b.HasOne("TestMVC.Models.Item", null)
-                        .WithMany()
-                        .HasForeignKey("ItemsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<long>("ItemId")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(0);
 
-                    b.HasOne("TestMVC.Data.User", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255)")
+                        .HasColumnOrder(1);
+
+                    b.Property<float>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("ItemId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserItems");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -332,6 +324,35 @@ namespace TestMVC.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("TestMVC.Models.UserItem", b =>
+                {
+                    b.HasOne("TestMVC.Models.Item", "Item")
+                        .WithMany("UserItems")
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TestMVC.Data.User", "User")
+                        .WithMany("UserItems")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Item");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("TestMVC.Data.User", b =>
+                {
+                    b.Navigation("UserItems");
+                });
+
+            modelBuilder.Entity("TestMVC.Models.Item", b =>
+                {
+                    b.Navigation("UserItems");
                 });
 #pragma warning restore 612, 618
         }
