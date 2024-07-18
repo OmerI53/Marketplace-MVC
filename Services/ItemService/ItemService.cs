@@ -1,5 +1,8 @@
 using Bogus;
+using Microsoft.EntityFrameworkCore;
+using TestMVC.Data;
 using TestMVC.Models;
+using TestMVC.Models.Enum;
 using TestMVC.Repository;
 
 namespace TestMVC.Services.ItemService;
@@ -37,17 +40,54 @@ public class ItemService(IGenericRepository<Item> repository) : IItemService
 
     public async Task<IEnumerable<Item>?> GetItemsAlike(string? searchQuery)
     {
+        IEnumerable<Item>? items;
         if (searchQuery == null)
         {
-            return repository.GetAll();
+            items = repository.GetAll();
+        }
+        else
+        {
+            items = await repository.FindAsync(x => x.ItemName.Contains(searchQuery));
         }
 
-        return await repository.FindAsync(x => x.ItemName.Contains(searchQuery));
+        var context = repository.GetContext();
+        var itemsAlike = items!.ToList();
+        foreach (var i in itemsAlike)
+        {
+            if (context.UserItems.Any(ui => ui.ItemId == i.Id))
+            {
+                i.InStock = true;
+            }
+        }
+
+        return itemsAlike;
     }
 
-    public Item? GetItemById(long id)
+    public Task<Item?> GetItemById(long id)
     {
-        return repository.GetById(id);
+        var set = repository.GetSet();
+        var items = set.Include(u => u.UserItems)!
+            .ThenInclude(ui => ui.User)
+            .Select(i => new Item
+            {
+                Id = i.Id,
+                ItemName = i.ItemName,
+                Description = i.Description,
+                Category = i.Category,
+                UserItems = i.UserItems!.Select(ui => new UserItem
+                {
+                    ItemId = ui.ItemId,
+                    UserId = ui.UserId,
+                    Quantity = ui.Quantity,
+                    Price = ui.Price,
+                    User = new User
+                    {
+                        Id = ui.User.Id,
+                        Name = ui.User.Name
+                    }
+                }).ToList()
+            }).FirstOrDefault(u => u.Id == id);
+        return Task.FromResult(items);
     }
 
     public async Task<IEnumerable<Item>> GetItemsByCategory(string? category)

@@ -1,4 +1,6 @@
+using System.Globalization;
 using TestMVC.Models;
+using TestMVC.Models.Request;
 using TestMVC.Repository;
 
 namespace TestMVC.Services.UserItemService;
@@ -21,13 +23,13 @@ public class UserItemService : IUserItemService
         {
             return false;
         }
-
+        var price = request.Price.Replace(".", CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator);
         var userItem = new UserItem
         {
             ItemId = request.Id,
             UserId = userId!,
             Quantity = request.Quantity,
-            Price = request.Price
+            Price = float.Parse(request.Price, CultureInfo.InvariantCulture),
         };
 
         _repository.Insert(userItem);
@@ -58,6 +60,17 @@ public class UserItemService : IUserItemService
         }
 
         _repository.Update(userItem);
+        return true;
+    }
+
+    public bool DeleteUserItem(long itemId, string? userId)
+    {
+        var userItem = _repository.FindAsync(x => x.ItemId == itemId && x.UserId == userId).Result.FirstOrDefault();
+        if (userItem == null)
+        {
+            return false;
+        }
+        _repository.Delete(userItem);
         return true;
     }
 }

@@ -1,4 +1,4 @@
-namespace TestMVC.Models;
+namespace TestMVC.Models.Enum;
 
 public enum Category
 {

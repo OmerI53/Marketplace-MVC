@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using TestMVC.Data;
+using TestMVC.Models.Enum;
 
 namespace TestMVC.Models;
 

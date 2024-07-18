@@ -20,7 +20,7 @@
 <br/>
 <div class="container mt-4 flex-y scrollable-container">
     <div class="row">
-        @foreach (var item in Model.Take(12)) // Limit to 12 items for 4 rows of 3
+        @foreach (var item in Model.Take(12))
         {
             <div class="col-md-4 mb-4">
                 <div class="card card-depth">
@@ -30,9 +30,18 @@
                         <p class="card-text">
                             <strong>Category:</strong> @item.Category.ToString()
                         </p>
-                        <a href="/Item/Details/@item.Id" class="float-right">
-                            <i class="fas fa-search"></i>
-                        </a>
+                        @if (item.InStock)
+                        {
+                            <a asp-controller="Item" asp-action="Details" asp-route-id="@item.Id" class="float-right">
+                                <i class="fas fa-search"></i>
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="float-right text-muted">
+                                <i class="fas fa-search"></i>
+                            </span>
+                        }
                     </div>
                 </div>
             </div>

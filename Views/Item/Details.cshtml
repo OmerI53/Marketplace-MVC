@@ -1,0 +1,70 @@
+@model Item
+
+<div class="container text-center">
+    <h1>@Model.ItemName</h1>
+    <div class="item-container">
+        <img src="@($"/images/categories/{Model.Category}.PNG")" alt="Image of @Model.ItemName"
+             style="width: 150px; height: auto"/>
+        <div class="description-box">
+            <p>@Model.Description</p>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Seller</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Buy</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.UserItems)
+        {
+            <tr>
+                <td>
+                    @item.User.Name
+                </td>
+                <td>@item.Price</td>
+                <td>@item.Quantity</td>
+                <td>
+                    <button class="btn btn-outline-primary btn-sm" onclick="addToCart('@item.ItemId')">
+                        <i class="fas fa-shopping-cart"></i>
+                    </button>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .item-container {
+        display: flex;
+        align-items: stretch; /* Ensure children stretch to fill the container */
+    }
+
+    .title-and-image {
+        flex-direction: column;
+        display: flex; /* Ensure the title and image are in a flex container */
+    }
+
+    .description-box {
+        margin-left: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Center content vertically */
+    }
+
+    .table {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .table td, .table th {
+        text-align: center;
+    }
+</style>

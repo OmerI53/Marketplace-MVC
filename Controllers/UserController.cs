@@ -18,14 +18,14 @@ public class UserController : Controller
         _itemService = itemService;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
         var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
         var user = _userService.GetUserById(userId);
 
         foreach (var item in user.UserItems)
         {
-            item.Item = _itemService.GetItemById(item.ItemId)!;
+            item.Item = (await _itemService.GetItemById(item.ItemId)!)!;
         }
 
         return View(user);

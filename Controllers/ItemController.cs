@@ -20,16 +20,18 @@ public class ItemController(IItemService itemService) : Controller
         return View(allData);
     }
 
-    public IActionResult ItemDetails(long id)
+    [HttpGet("{id:long}")]
+    public async Task<IActionResult> Details([FromRoute] long id)
     {
-        var item = itemService.GetItemById(id);
+        var item = await itemService.GetItemById(id);
         if (item == null)
         {
             return NotFound();
         }
+
         return View(item);
     }
-    
+
     [HttpGet]
     public async Task<List<Item>> GetItemsByCategory([FromQuery] string? category)
     {

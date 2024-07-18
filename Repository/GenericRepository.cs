@@ -62,7 +62,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         return await _set.Where(predicate).ToListAsync();
     }
 
-    public async Task<T> GetByIdWithIncludesAsync(string? id, params Expression<Func<T, object>>[] includes)
+    public async Task<T> GetByIdWithIncludesAsync(T? id, params Expression<Func<T, object>>[] includes)
     {
         var query = _set.AsQueryable();
 

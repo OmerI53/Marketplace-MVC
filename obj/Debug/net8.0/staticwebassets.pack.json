@@ -13,6 +13,18 @@
       "PackagePath": "staticwebassets/favicon.png"
     },
     {
+      "Id": "/Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/wwwroot/images/categories/Clothes.PNG",
+      "PackagePath": "staticwebassets/images/categories/Clothes.PNG"
+    },
+    {
+      "Id": "/Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/wwwroot/images/categories/Food.PNG",
+      "PackagePath": "staticwebassets/images/categories/Food.PNG"
+    },
+    {
+      "Id": "/Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/wwwroot/images/categories/Other.PNG",
+      "PackagePath": "staticwebassets/images/categories/Other.PNG"
+    },
+    {
       "Id": "/Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/wwwroot/js/site.js",
       "PackagePath": "staticwebassets/js/site.js"
     },

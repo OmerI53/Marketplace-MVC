@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using TestMVC.Models;
+using TestMVC.Models.Request;
 using TestMVC.Services.UserItemService;
 
 namespace TestMVC.Controllers;
-
+[Route("UserItem")]
 public class UserItemController : Controller
 {
     private readonly IUserItemService _service;
@@ -19,8 +19,9 @@ public class UserItemController : Controller
         var success = _service.CreateUserItem(request, userId);
         if (!success)
         {
-            ModelState.AddModelError("exists","Item already exists in cart");
+            TempData["ErrorMessage"] = "Item already exists in cart.";
         }
+
         return RedirectToAction("Index", "User");
     }
 
@@ -30,6 +31,20 @@ public class UserItemController : Controller
     {
         var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
         var result = _service.ChangeQuantity(itemId, userId, increase);
+        if (result == false)
+        {
+            return NotFound();
+        }
+
+        return Ok();
+    }
+    
+    [Route("{itemId:long}")]
+    [HttpDelete]
+    public IActionResult DeleteUserItem([FromRoute] long itemId)
+    {
+        var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        var result = _service.DeleteUserItem(itemId, userId);
         if (result == false)
         {
             return NotFound();

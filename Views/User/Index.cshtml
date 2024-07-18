@@ -5,17 +5,37 @@
 @model TestMVC.Data.User
 <script>
     function changeQuantity(itemId, increase) {
-        fetch(`/UserItem/ChangeQuantity?itemId=${itemId}&increase=${increase}`, { method: 'POST' })
+        fetch(`/UserItem/ChangeQuantity?itemId=${itemId}&increase=${increase}`, {method: 'POST'})
             .then(response => {
                 if (response.ok) {
                     window.location.reload();
                 }
                 return response.json();
             });
-        }
+    }
+    function deleteItem(itemId) {
+        fetch(`/UserItem/${itemId}`, {method: 'DELETE'})
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                }
+                return response.json();
+            });
+    }
 </script>
 
+
 <div class="text-center container">
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show overlay-alert" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+
     <h1 class="display-4 mt-4">Profile</h1>
     <h3>@Model.Name</h3>
     <table class="table">
@@ -40,8 +60,11 @@
                     <div class="flex-row">
                         <button class="btn btn-primary btn-sm" onclick="changeQuantity('@item.ItemId', true)">+</button>
                         <button class="btn btn-danger btn-sm" onclick="changeQuantity('@item.ItemId', false)">-</button>
-                    </div>
-                </td>
+                        <button class="btn btn-danger btn-sm" onclick="deleteItem('@item.ItemId')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div >
+                </td >
             </tr>
         }
         </tbody>
@@ -52,7 +75,8 @@
     </button>
 </div>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -78,5 +102,15 @@
     .btn-danger {
         background-color: red;
         color: white;
+    }
+
+    .overlay-alert {
+        position: fixed;
+        top: 20px; /* Adjust as needed */
+        left: 50%;
+        transform: translateX(-50%);
+        width: auto; /* Adjust as needed */
+        z-index: 1050; /* Ensure it's above other elements */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional for a subtle shadow */
     }
 </style>
