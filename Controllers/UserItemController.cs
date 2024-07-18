@@ -3,6 +3,7 @@ using TestMVC.Models.Request;
 using TestMVC.Services.UserItemService;
 
 namespace TestMVC.Controllers;
+
 [Route("UserItem")]
 public class UserItemController : Controller
 {
@@ -13,6 +14,7 @@ public class UserItemController : Controller
         _service = userItemService;
     }
 
+    [HttpPost]
     public IActionResult Create(CreateUserItemModel request)
     {
         var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
@@ -38,7 +40,7 @@ public class UserItemController : Controller
 
         return Ok();
     }
-    
+
     [Route("{itemId:long}")]
     [HttpDelete]
     public IActionResult DeleteUserItem([FromRoute] long itemId)

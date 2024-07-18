@@ -1,5 +1,17 @@
 @model Item
 
+<script>
+    function addToCart(itemId) {
+        fetch(`/Cart/AddToCart?itemId=${itemId}`, {method: 'POST'})
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/Cart';
+                }
+                return response.json();
+            });
+    }
+</script>
+
 <div class="container text-center">
     <h1>@Model.ItemName</h1>
     <div class="item-container">
@@ -28,7 +40,7 @@
                 <td>@item.Price</td>
                 <td>@item.Quantity</td>
                 <td>
-                    <button class="btn btn-outline-primary btn-sm" onclick="addToCart('@item.ItemId')">
+                    <button class="btn btn-outline-primary btn-sm" onclick="addToCart('@item.ItemId','@item.')">
                         <i class="fas fa-shopping-cart"></i>
                     </button>
                 </td>
@@ -43,12 +55,6 @@
         display: flex;
         align-items: stretch; /* Ensure children stretch to fill the container */
     }
-
-    .title-and-image {
-        flex-direction: column;
-        display: flex; /* Ensure the title and image are in a flex container */
-    }
-
     .description-box {
         margin-left: 20px;
         padding: 10px;

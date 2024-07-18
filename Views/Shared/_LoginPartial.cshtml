@@ -14,24 +14,39 @@
         }
     });
 </script>
-<ul class="navbar-nav">
+
+<ul class="navbar-nav w-100">
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
             <a id="manage" class="nav-link text-dark" asp-controller="User" asp-action="Index">Profile</a>
         </li>
-        @if (await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User) ?? new User(), "Admin"))
-        {
-            <li class="nav-item">
-                <a id="manage" class="nav-link text-dark" asp-controller="Admin" asp-action="Index">Admin Panel</a>
-            </li>
-        }
-
-        <li class="nav-item ml-auto">
+        <li class="nav-item">
             <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                 <button id="logout" type="submit" class="nav-link btn btn-link text-dark border-0">Logout</button>
             </form>
         </li>
+        @if (await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User) ?? new User(), "Admin"))
+        {
+            <div class="d-flex ml-auto">
+                <li class="nav-item">
+                    <a id="manage" class="nav-link text-dark" asp-controller="Admin" asp-action="Index">Admin Panel</a>
+                </li>
+                <li class="nav-item justify-content-center">
+                    <button id="shopping-cart" class="btn btn-outline-secondary btn-toolbar" asp-action="Index" asp-controller="Cart">
+                        <i class="fas fa-shopping-cart"></i>
+                    </button>
+                </li>
+            </div>
+        }
+        else
+        {
+            <li class="nav-item ml-auto">
+                <button id="shopping-cart" class="btn btn-outline-secondary btn-toolbar" asp-action="Index" asp-controller="Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                </button>
+            </li>
+        }
     }
     else
     {
@@ -43,3 +58,17 @@
         </li>
     }
 </ul>
+
+<style>
+    .navbar-nav > li, .navbar-nav .d-flex {
+        display: flex;
+        align-items: center;
+        margin-right: 15px; /* Adjust spacing as needed */
+    }
+
+    /* Optional: If you want the shopping cart to stand out or have additional styling */
+    #shopping-cart {
+        padding: 5px 10px; /* Adjust padding as needed */
+        border-radius: 5px; /* Optional: Adds rounded corners */
+    }
+</style>

@@ -1,6 +1,6 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TestMVC.Data;
 using TestMVC.Services.ItemService;
 using TestMVC.Services.UserService;
 
@@ -20,7 +20,7 @@ public class UserController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var user = _userService.GetUserById(userId);
 
         foreach (var item in user.UserItems)

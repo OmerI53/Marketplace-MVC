@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 using TestMVC.Data;
 using TestMVC.Repository;
 using TestMVC.Services.ItemService;
@@ -9,11 +8,6 @@ using TestMVC.Services.UserService;
 
 var builder = WebApplication.CreateBuilder(args);
 {
-    builder.Services.AddSwaggerGen(c =>
-    {
-        c.SwaggerDoc("v1", new OpenApiInfo { Title = "MarketplaceMVC API", Version = "v1" });
-    });
-
     builder.Services.AddDbContext<AppDbContext>(options =>
     {
         options.UseMySQL(builder.Configuration.GetConnectionString("MVCConnection") ?? string.Empty);
@@ -47,12 +41,8 @@ var app = builder.Build();
 
     app.UseHttpsRedirection();
     app.UseStaticFiles();
-
     app.UseRouting();
-    app.UseSwagger();
     app.UseCors();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MarketplaceMVC API V1"));
-
     app.UseAuthentication(); // Ensure this is before UseAuthorization
     app.UseAuthorization();
 
