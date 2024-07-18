@@ -6,6 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
         <SelfContained>false</SelfContained>
+        <RootNamespace>TestMVC</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

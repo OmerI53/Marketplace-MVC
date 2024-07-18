@@ -9367,11 +9367,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/TestMVC.csproj",
-      "projectName": "TestMVC",
-      "projectPath": "/Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/TestMVC.csproj",
+      "projectUniqueName": "/Users/omerislam/Desktop/Ömer/index/TestMVC/MarketplaceMVC/MarketplaceMVC.csproj",
+      "projectName": "MarketplaceMVC",
+      "projectPath": "/Users/omerislam/Desktop/Ömer/index/TestMVC/MarketplaceMVC/MarketplaceMVC.csproj",
       "packagesPath": "/Users/omerislam/.nuget/packages/",
-      "outputPath": "/Users/omerislam/Desktop/Ömer/index/TestMVC/TestMVC/obj/",
+      "outputPath": "/Users/omerislam/Desktop/Ömer/index/TestMVC/MarketplaceMVC/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/omerislam/.nuget/NuGet/NuGet.Config"
@@ -9392,11 +9392,6 @@
         "warnAsError": [
           "NU1605"
         ]
-      },
-      "restoreAuditProperties": {
-        "enableAudit": "true",
-        "auditLevel": "low",
-        "auditMode": "direct"
       }
     },
     "frameworks": {

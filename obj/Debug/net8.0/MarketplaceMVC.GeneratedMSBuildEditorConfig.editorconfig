@@ -1,0 +1,99 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = MarketplaceMVC
+build_property.RootNamespace = MarketplaceMVC
+build_property.ProjectDir = /Users/omerislam/Desktop/Ömer/index/TestMVC/MarketplaceMVC/
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = /Users/omerislam/Desktop/Ömer/index/TestMVC/MarketplaceMVC
+build_property._RazorSourceGeneratorDebug = 
+
+[/Users/omerislam/Desktop/Ömer/index/TestMVC/MarketplaceMVC/Areas/Identity/Pages/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = TG9naW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/omerislam/Desktop/Ömer/index/TestMVC/MarketplaceMVC/Areas/Identity/Pages/Account/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UmVnaXN0ZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/omerislam/Desktop/Ömer/index/TestMVC/MarketplaceMVC/Areas/Identity/Pages/Account/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = X1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/omerislam/Desktop/Ömer/index/TestMVC/MarketplaceMVC/Areas/Identity/Pages/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = X1ZhbGlkYXRpb25TY3JpcHRzUGFydGlhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/omerislam/Desktop/Ömer/index/TestMVC/MarketplaceMVC/Areas/Identity/Pages/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = X1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/omerislam/Desktop/Ömer/index/TestMVC/MarketplaceMVC/Areas/Identity/Pages/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = X1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/omerislam/Desktop/Ömer/index/TestMVC/MarketplaceMVC/Views/Admin/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = SW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/omerislam/Desktop/Ömer/index/TestMVC/MarketplaceMVC/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = SW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/omerislam/Desktop/Ömer/index/TestMVC/MarketplaceMVC/Views/Item/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = RGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/omerislam/Desktop/Ömer/index/TestMVC/MarketplaceMVC/Views/Item/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = SW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/omerislam/Desktop/Ömer/index/TestMVC/MarketplaceMVC/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = RXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/omerislam/Desktop/Ömer/index/TestMVC/MarketplaceMVC/Views/Shared/_CreateItem.cshtml]
+build_metadata.AdditionalFiles.TargetPath = X0NyZWF0ZUl0ZW0uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/omerislam/Desktop/Ömer/index/TestMVC/MarketplaceMVC/Views/Shared/_LoginPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = X0xvZ2luUGFydGlhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/omerislam/Desktop/Ömer/index/TestMVC/MarketplaceMVC/Views/Shared/_SellItem.cshtml]
+build_metadata.AdditionalFiles.TargetPath = X1NlbGxJdGVtLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/omerislam/Desktop/Ömer/index/TestMVC/MarketplaceMVC/Views/Shared/_UserList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = X1VzZXJMaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/omerislam/Desktop/Ömer/index/TestMVC/MarketplaceMVC/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = X1ZhbGlkYXRpb25TY3JpcHRzUGFydGlhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/omerislam/Desktop/Ömer/index/TestMVC/MarketplaceMVC/Views/User/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = SW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/omerislam/Desktop/Ömer/index/TestMVC/MarketplaceMVC/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = X1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/omerislam/Desktop/Ömer/index/TestMVC/MarketplaceMVC/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = X1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/omerislam/Desktop/Ömer/index/TestMVC/MarketplaceMVC/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = X0xheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = b-3pgy543cda

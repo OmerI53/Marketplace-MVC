@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 {
     builder.Services.AddSwaggerGen(c =>
     {
-        c.SwaggerDoc("v1", new OpenApiInfo { Title = "TestMVC API", Version = "v1" });
+        c.SwaggerDoc("v1", new OpenApiInfo { Title = "MarketplaceMVC API", Version = "v1" });
     });
 
     builder.Services.AddDbContext<AppDbContext>(options =>
@@ -51,7 +51,7 @@ var app = builder.Build();
     app.UseRouting();
     app.UseSwagger();
     app.UseCors();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TestMVC API V1"));
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MarketplaceMVC API V1"));
 
     app.UseAuthentication(); // Ensure this is before UseAuthorization
     app.UseAuthorization();

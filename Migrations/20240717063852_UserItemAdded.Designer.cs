@@ -155,7 +155,7 @@ namespace TestMVC.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("TestMVC.Data.User", b =>
+            modelBuilder.Entity("MarketplaceMVC.Data.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
@@ -227,7 +227,7 @@ namespace TestMVC.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("TestMVC.Models.Item", b =>
+            modelBuilder.Entity("MarketplaceMVC.Models.Item", b =>
                 {
                     b.Property<long?>("Id")
                         .ValueGeneratedOnAdd()
@@ -253,7 +253,7 @@ namespace TestMVC.Migrations
                     b.ToTable("Item");
                 });
 
-            modelBuilder.Entity("TestMVC.Models.UserItem", b =>
+            modelBuilder.Entity("MarketplaceMVC.Models.UserItem", b =>
                 {
                     b.Property<long>("ItemId")
                         .HasColumnType("bigint")
@@ -287,7 +287,7 @@ namespace TestMVC.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("TestMVC.Data.User", null)
+                    b.HasOne("MarketplaceMVC.Data.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -296,7 +296,7 @@ namespace TestMVC.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("TestMVC.Data.User", null)
+                    b.HasOne("MarketplaceMVC.Data.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -311,7 +311,7 @@ namespace TestMVC.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TestMVC.Data.User", null)
+                    b.HasOne("MarketplaceMVC.Data.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -320,22 +320,22 @@ namespace TestMVC.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("TestMVC.Data.User", null)
+                    b.HasOne("MarketplaceMVC.Data.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TestMVC.Models.UserItem", b =>
+            modelBuilder.Entity("MarketplaceMVC.Models.UserItem", b =>
                 {
-                    b.HasOne("TestMVC.Models.Item", "Item")
+                    b.HasOne("MarketplaceMVC.Models.Item", "Item")
                         .WithMany("UserItems")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TestMVC.Data.User", "User")
+                    b.HasOne("MarketplaceMVC.Data.User", "User")
                         .WithMany("UserItems")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -346,12 +346,12 @@ namespace TestMVC.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("TestMVC.Data.User", b =>
+            modelBuilder.Entity("MarketplaceMVC.Data.User", b =>
                 {
                     b.Navigation("UserItems");
                 });
 
-            modelBuilder.Entity("TestMVC.Models.Item", b =>
+            modelBuilder.Entity("MarketplaceMVC.Models.Item", b =>
                 {
                     b.Navigation("UserItems");
                 });
