@@ -14,6 +14,7 @@ public class UserItemController : Controller
         _service = userItemService;
     }
 
+    [Route("Create")]
     [HttpPost]
     public IActionResult Create(CreateUserItemModel request)
     {
@@ -21,13 +22,13 @@ public class UserItemController : Controller
         var success = _service.CreateUserItem(request, userId);
         if (!success)
         {
-            TempData["ErrorMessage"] = "Item already exists in cart.";
+            TempData["ErrorMessage"] = "Item is already in collection,\nincrease/decrease quantity from the menu.";
         }
 
         return RedirectToAction("Index", "User");
     }
 
-
+    [Route("ChangeQuantity")]
     [HttpPost]
     public IActionResult ChangeQuantity(long itemId, bool increase)
     {

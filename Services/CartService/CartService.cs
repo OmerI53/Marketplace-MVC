@@ -1,64 +1,39 @@
 using Newtonsoft.Json;
 using TestMVC.Models;
+using TestMVC.Services.UserItemService;
 
 namespace TestMVC.Services.CartService;
 
 public class CartService : ICartService
 {
-    private const string CartCookieKey = "Cart";
+    private readonly IUserItemService _userItemService;
 
-    public List<CartItem> GetCart(HttpContext context)
+    public CartService(IUserItemService userItemService)
     {
-        var cookie = context.Request.Cookies[CartCookieKey];
-        return (cookie == null ? new List<CartItem>() : JsonConvert.DeserializeObject<List<CartItem>>(cookie))!;
+        _userItemService = userItemService;
     }
 
-    public void AddToCart(HttpContext context, long itemId)
+    public void Purchase(List<CartItem> cart)
     {
-        var cart = GetCart(context);
-        //Todo fix this
-        var item = new CartItem { ItemId = itemId, Quantity = 1 };
-        var existingItem = cart.FirstOrDefault(x => x.ItemId == item.ItemId);
-        if (existingItem != null)
+        ValidatePurchaseCount(cart);
+        foreach (var item in cart)
         {
-            existingItem.Quantity += item.Quantity;
+            for (var i = 0; i < item.Quantity; i++)
+            {
+                var success = _userItemService.ChangeQuantity(item.ItemId, item.UserId,false);
+                if (!success)
+                {
+                    throw new Exception("Failed to purchase item");
+                }
+            }
         }
-        else
-        {
-            cart.Add(item);
-        }
-
-        var cookieOptions = new CookieOptions { Expires = DateTime.Now.AddMinutes(30) };
-        context.Response.Cookies.Append(CartCookieKey, JsonConvert.SerializeObject(cart), cookieOptions);
     }
 
-    public void RemoveFromCart(HttpContext context, int productId)
+    private void ValidatePurchaseCount(List<CartItem> cart)
     {
-        var cart = GetCart(context);
-        var item = cart.FirstOrDefault(x => x.ItemId == productId);
-        if (item != null)
+        if ((from item in cart let itemQuantity = _userItemService.GetQuantity(item.ItemId) where item.Quantity > itemQuantity select item).Any())
         {
-            cart.Remove(item);
+            throw new Exception("Not enough items in stock");
         }
-
-        var cookieOptions = new CookieOptions { Expires = DateTime.Now.AddMinutes(30) };
-        context.Response.Cookies.Append(CartCookieKey, JsonConvert.SerializeObject(cart), cookieOptions);
-    }
-
-    public void ClearCart(HttpContext context)
-    {
-        context.Response.Cookies.Delete(CartCookieKey);
-    }
-
-    public void Purchase(HttpContext httpContext)
-    {
-        var cart = GetCart(httpContext);
-        if (cart.Count == 0)
-        {
-            return;
-        }
-
-        //TODO logic
-        ClearCart(httpContext);
     }
 }

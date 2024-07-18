@@ -23,6 +23,7 @@ public class UserItemService : IUserItemService
         {
             return false;
         }
+
         var price = request.Price.Replace(".", CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator);
         var userItem = new UserItem
         {
@@ -70,7 +71,13 @@ public class UserItemService : IUserItemService
         {
             return false;
         }
+
         _repository.Delete(userItem);
         return true;
+    }
+
+    public int GetQuantity(long itemItemId)
+    {
+        return _repository.GetById(itemItemId)!.Quantity;
     }
 }

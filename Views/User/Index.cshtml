@@ -3,6 +3,7 @@
 }
 
 @model TestMVC.Data.User
+
 <script>
     function changeQuantity(itemId, increase) {
         fetch(`/UserItem/ChangeQuantity?itemId=${itemId}&increase=${increase}`, {method: 'POST'})
@@ -26,58 +27,59 @@
 </script>
 
 
-<div class="text-center container">
-    @if (TempData["ErrorMessage"] != null)
-    {
-        <div class="alert alert-danger alert-dismissible fade show overlay-alert" role="alert">
-            @TempData["ErrorMessage"]
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    }
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show overlay-alert" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
 
-    <h3>@Model.Name</h3>
-    <img src="@($"favicon.png")" alt="default profile picture"
-         style="width: 250px; height: auto"/>
-    <br/>
-    <div style="height: 20px"></div>
-    <table class="table">
-        <thead>Collection</thead>
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var item in Model.UserItems)
-        {
+<div class="flex-container">
+    <div class="user-info">
+        <img src="@($"favicon.png")" alt="default profile picture" style="width: 400px; height: auto"/>
+        <h1>@Model.Name</h1>
+    </div>
+    <div class="user-items">
+        <table class="table">
+            <thead>Collection</thead>
+            <thead>
             <tr>
-                <td>@item.Item.ItemName</td>
-                <td>@item.Item.Category</td>
-                <td>@item.Price</td>
-                <td>@item.Quantity</td>
-                <td>
-                    <div class="flex-row">
-                        <button class="btn btn-primary btn-sm" onclick="changeQuantity('@item.ItemId', true)">+</button>
-                        <button class="btn btn-danger btn-sm" onclick="changeQuantity('@item.ItemId', false)">-</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteItem('@item.ItemId')">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div >
-                </td >
+                <th>Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Actions</th>
             </tr>
-        }
-        </tbody>
-    </table>
-    <br/>
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-        Sell Items
-    </button>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.UserItems)
+            {
+                <tr>
+                    <td>@item.Item.ItemName</td>
+                    <td>@item.Item.Category</td>
+                    <td>@item.Price</td>
+                    <td>@item.Quantity</td>
+                    <td>
+                        <div class="flex-row">
+                            <button class="btn btn-primary btn-sm" onclick="changeQuantity('@item.ItemId', true)">+</button>
+                            <button class="btn btn-danger btn-sm" onclick="changeQuantity('@item.ItemId', false)">-</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteItem('@item.ItemId')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div >
+                    </td >
+                </tr>
+            }
+            </tbody>
+        </table>
+        <br/>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            Sell Items
+        </button>
+    </div>
 </div>
 
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -99,6 +101,22 @@
 
 
 <style>
+    .flex-container {
+        display: flex;
+        padding: 30px;
+    }
+
+    .user-info {
+        /* Adjust as needed */
+        flex: 1;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .user-items {
+        /* Adjust as needed */
+        flex: 2;
+    }
     .btn-sm {
         padding: 3px 6px; /* Reduced padding */
         font-size: 10px; /* Reduced font size */

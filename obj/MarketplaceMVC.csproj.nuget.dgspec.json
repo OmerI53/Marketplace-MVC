@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/omerislam/Desktop/Ömer/index/TestMVC/MarketplaceMVC/MarketplaceMVC.csproj": {}
+    "/Users/omerislam/Desktop/Ömer/index/Marketplace-MVC/MarketplaceMVC.csproj": {}
   },
   "projects": {
-    "/Users/omerislam/Desktop/Ömer/index/TestMVC/MarketplaceMVC/MarketplaceMVC.csproj": {
+    "/Users/omerislam/Desktop/Ömer/index/Marketplace-MVC/MarketplaceMVC.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/omerislam/Desktop/Ömer/index/TestMVC/MarketplaceMVC/MarketplaceMVC.csproj",
+        "projectUniqueName": "/Users/omerislam/Desktop/Ömer/index/Marketplace-MVC/MarketplaceMVC.csproj",
         "projectName": "MarketplaceMVC",
-        "projectPath": "/Users/omerislam/Desktop/Ömer/index/TestMVC/MarketplaceMVC/MarketplaceMVC.csproj",
+        "projectPath": "/Users/omerislam/Desktop/Ömer/index/Marketplace-MVC/MarketplaceMVC.csproj",
         "packagesPath": "/Users/omerislam/.nuget/packages/",
-        "outputPath": "/Users/omerislam/Desktop/Ömer/index/TestMVC/MarketplaceMVC/obj/",
+        "outputPath": "/Users/omerislam/Desktop/Ömer/index/Marketplace-MVC/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/omerislam/.nuget/NuGet/NuGet.Config"

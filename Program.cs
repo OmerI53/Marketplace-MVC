@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TestMVC.Data;
 using TestMVC.Repository;
+using TestMVC.Services.CartService;
 using TestMVC.Services.ItemService;
 using TestMVC.Services.UserItemService;
 using TestMVC.Services.UserService;
@@ -20,6 +21,15 @@ var builder = WebApplication.CreateBuilder(args);
         })
         .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<AppDbContext>();
+    
+    builder.Services.ConfigureApplicationCookie(options =>
+    {
+        options.Cookie.HttpOnly = true;
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+        options.LoginPath = "/Identity/Account/Login";
+        options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+        options.SlidingExpiration = true;
+    });
 
     builder.Services.AddControllersWithViews();
     builder.Services.AddRazorPages();
@@ -29,6 +39,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<IItemService, ItemService>();
     builder.Services.AddScoped<IUserService, UserService>();
     builder.Services.AddScoped<IUserItemService, UserItemService>();
+    builder.Services.AddScoped<ICartService, CartService>();
 }
 
 var app = builder.Build();
@@ -45,7 +56,6 @@ var app = builder.Build();
     app.UseCors();
     app.UseAuthentication(); // Ensure this is before UseAuthorization
     app.UseAuthorization();
-
     app.MapControllerRoute(
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using TestMVC.Models;
 using TestMVC.Services.CartService;
 
@@ -7,42 +8,85 @@ namespace TestMVC.Controllers;
 public class CartController : Controller
 {
     private readonly ICartService _cartService;
+    private const string CartCookieKey = "Cart";
 
-    public CartController(CartService cartService)
+    public CartController(ICartService cartService)
     {
         _cartService = cartService;
     }
 
     public IActionResult Index()
     {
-        var cart = _cartService.GetCart(HttpContext);
+        var cart = GetCart(HttpContext);
         return View(cart);
     }
 
     [HttpPost]
-    public IActionResult AddToCart(int itemId)
+    public IActionResult AddToCart([FromBody] CartItem request)
     {
-        _cartService.AddToCart(HttpContext, itemId);
-        return RedirectToAction("Index");
+        var cart = GetCart(HttpContext);
+
+        CartItem? existingItem = null;
+        if (cart.Count > 0)
+        {
+            existingItem = cart.FirstOrDefault(x => x.ItemId == request.ItemId && x.UserId == request.UserId);
+        }
+
+        if (existingItem != null)
+        {
+            existingItem.Quantity += request.Quantity;
+        }
+        else
+        {
+            cart.Add(request);
+        }
+
+        var cookieOptions = new CookieOptions { Expires = DateTime.Now.AddMinutes(30) };
+        HttpContext.Response.Cookies.Append(CartCookieKey, JsonConvert.SerializeObject(cart), cookieOptions);
+        return RedirectToAction("Details", "Item");
     }
 
     [HttpPost]
-    public IActionResult RemoveFromCart(int productId)
+    public IActionResult RemoveFromCart(int itemId, string userId)
     {
-        _cartService.RemoveFromCart(HttpContext, productId);
+        var cart = GetCart(HttpContext);
+        var item = cart.FirstOrDefault(x => x.ItemId == itemId && x.UserId == userId);
+        if (item != null)
+        {
+            cart.Remove(item);
+        }
+
+        HttpContext.Response.Cookies.Delete(CartCookieKey);
+        var cookieOptions = new CookieOptions { Expires = DateTime.Now.AddMinutes(30) };
+        HttpContext.Response.Cookies.Append(CartCookieKey, JsonConvert.SerializeObject(cart), cookieOptions);
         return RedirectToAction("Index");
     }
 
     [HttpPost]
     public IActionResult ClearCart()
     {
-        _cartService.ClearCart(HttpContext);
+        HttpContext.Response.Cookies.Delete(CartCookieKey);
         return RedirectToAction("Index");
     }
 
     public IActionResult Purchase()
     {
-        _cartService.Purchase(HttpContext);
+        var cart = GetCart(HttpContext);
+        try
+        {
+            _cartService.Purchase(cart);
+        }
+        catch (Exception e)
+        {
+            TempData["ErrorMessage"] = e.Message;
+        }
+
         return RedirectToAction("Index");
+    }
+
+    private List<CartItem> GetCart(HttpContext context)
+    {
+        var cookie = context.Request.Cookies[CartCookieKey];
+        return cookie == null ? [] : JsonConvert.DeserializeObject<List<CartItem>>(cookie)!;
     }
 }
