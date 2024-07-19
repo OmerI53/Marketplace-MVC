@@ -26,7 +26,8 @@ public class ItemController(IItemService itemService) : Controller
         var item = await itemService.GetItemById(id);
         if (item == null)
         {
-            return NotFound();
+            TempData["ErrorMessage"] = "Item not found.";
+            return RedirectToAction("Index","Home");
         }
 
         return View(item);

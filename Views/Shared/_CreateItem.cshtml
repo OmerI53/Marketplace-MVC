@@ -3,7 +3,7 @@
 
 <form asp-action="SubmitItem" asp-controller="Admin">
     <div class="text-center">
-        <label>Create new Item</label>
+        <h1>Create new Item</h1>
     </div>
     <label class="mt-4">Item Name</label>
     <input class="form-control" type="text" asp-for="ItemName" placeholder="Enter item name"/>
@@ -31,5 +31,8 @@
         background-color: red !important; /* Set background color to red */
         border-color: red !important; /* Set border color to red */
         color: white !important; /* Set text color to white */
+    }
+    label {
+        color: white;
     }
 </style>

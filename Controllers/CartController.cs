@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using TestMVC.Models;
+using TestMVC.Models.Request;
 using TestMVC.Services.CartService;
 
 namespace TestMVC.Controllers;
@@ -22,9 +23,16 @@ public class CartController : Controller
     }
 
     [HttpPost]
-    public IActionResult AddToCart([FromBody] CartItem request)
+    public IActionResult AddToCart([FromBody] CreateCartItem? request)
     {
         var cart = GetCart(HttpContext);
+
+        if (request == null)
+        {
+            TempData["ErrorMessage"] = "Error occurred while adding item to cart.\nPlease try again.";
+            return NotFound();
+        }
+
 
         CartItem? existingItem = null;
         if (cart.Count > 0)
@@ -38,7 +46,15 @@ public class CartController : Controller
         }
         else
         {
-            cart.Add(request);
+            var item = new CartItem
+            {
+                ItemId = request.ItemId,
+                SellerId = request.SellerId,
+                ItemName = request.ItemName,
+                Price = Math.Round(double.Parse(request.Price), 2),
+                Quantity = request.Quantity
+            };
+            cart.Add(item);
         }
 
         var cookieOptions = new CookieOptions { Expires = DateTime.Now.AddMinutes(30) };
@@ -88,7 +104,7 @@ public class CartController : Controller
     {
         var cookie = context.Request.Cookies[CartCookieKey];
         if (cookie is not (null or "[null]")) return JsonConvert.DeserializeObject<List<CartItem>>(cookie)!;
-        
+
         //A null item is Added to the card
         context.Response.Cookies.Delete(CartCookieKey);
         context.Response.Cookies.Append(CartCookieKey, "[]");

@@ -17,7 +17,7 @@
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3 navbar-main">
         <div class="container-fluid">
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                 <img src="~/favicon.png" alt="Home" style="height: 60px;">
@@ -39,7 +39,7 @@
     </main>
 </div>
 
-<footer class="site-footer border-top footer text-muted">
+<footer class="site-footer border-top footer text-muted bg-white">
     <div class="container">
         &copy; 2024 - MarketplaceMVC - <a>Ömer İslam</a>
     </div>
@@ -55,5 +55,13 @@
     body, html {
         height: 100%;
         margin: 0;
+        background-image: url("/images/background.jpg");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    .navbar {
+        background: whitesmoke;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
     }
 </style>

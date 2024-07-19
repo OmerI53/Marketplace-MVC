@@ -1,14 +1,17 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TestMVC.Models.Request;
 using TestMVC.Services.UserItemService;
 
 namespace TestMVC.Controllers;
 
+[Authorize]
 [Route("UserItem")]
 public class UserItemController : Controller
 {
     private readonly IUserItemService _service;
 
+    /// <inheritdoc />
     public UserItemController(IUserItemService userItemService)
     {
         _service = userItemService;

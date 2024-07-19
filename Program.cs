@@ -66,7 +66,7 @@ var app = builder.Build();
     {
         var roleManager = roleScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-        string[] roleNames = ["Admin", "User", "PremiumUser"];
+        string[] roleNames = ["Admin", "BasicUser", "PremiumUser"];
         foreach (var roleName in roleNames)
         {
             var roleExist = await roleManager.RoleExistsAsync(roleName);

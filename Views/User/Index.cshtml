@@ -1,7 +1,11 @@
 @{
-    ViewData["Title"] = "Home Page";
+ViewData["Title"] = "Home Page";
 }
 
+
+@inject UserManager<User> UserManager
+@using Microsoft.AspNetCore.Identity
+@using TestMVC.Models.Entity
 @model TestMVC.Models.Entity.User
 
 <script>
@@ -14,7 +18,7 @@
                 return response.json();
             });
     }
-    
+
     function deleteItem(itemId) {
         fetch(`/UserItem/${itemId}`, {method: 'DELETE'})
             .then(response => {
@@ -27,59 +31,57 @@
 </script>
 
 
-@if (TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-danger alert-dismissible fade show overlay-alert" role="alert">
-        @TempData["ErrorMessage"]
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-}
-
+@await Html.PartialAsync("_ErrorPopup")
 <div class="flex-container">
     <div class="user-info">
-        <img src="@($"favicon.png")" alt="default profile picture" style="width: 400px; height: auto"/>
+        <img src="@($"favicon.png")" alt="default profile picture"
+             style="width: 400px; height: auto; border: solid; color: white"/>
         <h1>@Model.Name</h1>
     </div>
+    @if (!await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User) ?? new User(), "BasicUser"))
+    {
     <div class="user-items">
         <table class="table">
-            <thead>Collection</thead>
+            <h1 style="color:white;">Collection</h1>
             <thead>
             <tr>
-                <th>Name</th>
-                <th>Category</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Actions</th>
+                <th> Name</th>
+                <th> Category</th>
+                <th> Price</th>
+                <th> Quantity</th>
+                <th> Actions</th>
             </tr>
             </thead>
             <tbody>
             @foreach (var item in Model.UserItems)
             {
-                <tr>
-                    <td>@item.Item!.ItemName</td>
-                    <td>@item.Item.Category</td>
-                    <td>@item.Price</td>
-                    <td>@item.Quantity</td>
-                    <td>
-                        <div class="flex-row">
-                            <button class="btn btn-primary btn-sm" onclick="changeQuantity('@item.ItemId', true)">+</button>
-                            <button class="btn btn-danger btn-sm" onclick="changeQuantity('@item.ItemId', false)">-</button>
-                            <button class="btn btn-danger btn-sm" onclick="deleteItem('@item.ItemId')">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div >
-                    </td >
-                </tr>
+            <tr>
+                <td> @item.Item!.ItemName </td>
+                <td> @item.Item.Category </td>
+                <td> @item.Price </td>
+                <td> @item.Quantity </td>
+                <td>
+                    <div class="flex-row">
+                        <button class="btn btn-primary btn-sm" onclick="changeQuantity('@item.ItemId', true)">
+                            +
+                        </button>
+                        <button class="btn btn-danger btn-sm" onclick="changeQuantity('@item.ItemId', false)">
+                            -
+                        </button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteItem('@item.ItemId')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
             }
             </tbody>
         </table>
-        <br/>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        <button type="button" class="btn sell-button" data-toggle="modal" data-target="#exampleModal">
             Sell Items
         </button>
     </div>
+    }
 </div>
 
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -99,7 +101,6 @@
     </div>
 </div>
 
-
 <style>
     .flex-container {
         display: flex;
@@ -107,19 +108,24 @@
     }
 
     .user-info {
-        /* Adjust as needed */
         flex: 1;
         justify-content: center;
         text-align: center;
     }
 
     .user-items {
-        /* Adjust as needed */
         flex: 2;
     }
+
+    table {
+        background: white;
+        opacity: 65%;
+        border: solid 3px white;
+    }
+
     .btn-sm {
-        padding: 3px 6px; /* Reduced padding */
-        font-size: 10px; /* Reduced font size */
+        padding: 3px 6px;
+        font-size: 10px;
     }
 
     .btn-danger {
@@ -127,13 +133,15 @@
         color: white;
     }
 
-    .overlay-alert {
-        position: fixed;
-        top: 20px; /* Adjust as needed */
-        left: 50%;
-        transform: translateX(-50%);
-        width: auto; /* Adjust as needed */
-        z-index: 1050; /* Ensure it's above other elements */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional for a subtle shadow */
+    .user-info h1 {
+        color: white;
+    }
+
+    .sell-button {
+        background: white;
+    }
+
+    .sell-button:hover {
+        background: grey;
     }
 </style>

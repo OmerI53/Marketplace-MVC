@@ -1,77 +1,82 @@
 @model ICollection<CartItem>
 
 @{
-ViewData["Title"] = "Cart";
+    ViewData["Title"] = "Cart";
 }
 
 <div class="container">
     @if (TempData["ErrorMessage"] != null)
     {
-    <div class="alert alert-danger alert-dismissible fade show overlay-alert" role="alert">
-        @TempData["ErrorMessage"]
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
+        <div class="alert alert-danger alert-dismissible fade show overlay-alert" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
     }
     <div class="cart-layout">
         <div class="cart-items">
             @if (!Model.Any())
             {
-            <p>Your cart is empty.</p>
+                <p>Your cart is empty.</p>
             }
             else
             {
-            <div class="scrollable-table">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Product</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Total</th>
-                        <th>Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach (var item in Model)
-                    {
-                    <tr>
-                        <td>@item.ItemName</td>
-                        <td>@item.Quantity</td>
-                        <td>@item.Price.ToString("C")</td>
-                        <td>@((item.Quantity * item.Price).ToString("C"))</td>
-                        <td>
-                            @using (Html.BeginForm("RemoveFromCart", "Cart", FormMethod.Post))
-                            {
-                            <input type="hidden" name="itemId" value="@item.ItemId"/>
-                            <input type="hidden" name="userId" value="@item.SellerId"/>
-                            <button type="submit" class="btn btn-danger">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                            }
-                        </td>
-                    </tr>
-                    }
-                    </tbody>
-                </table>
-            </div>
+                <div class="scrollable-table">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Total</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.ItemName</td>
+                                <td>@item.Quantity</td>
+                                <td>@item.Price.ToString("C")</td>
+                                <td>@((item.Quantity * item.Price).ToString("C"))</td>
+                                <td>
+                                    @using (Html.BeginForm("RemoveFromCart", "Cart", FormMethod.Post))
+                                    {
+                                        <input type="hidden" name="itemId" value="@item.ItemId"/>
+                                        <input type="hidden" name="userId" value="@item.SellerId"/>
+                                        <button type="submit" class="btn btn-danger" style="font-size: 12px">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
             }
         </div>
         <div style="width: 50px"></div>
-        <div class="cart-summary">
-            <strong style="font-size: 40px">Total:</strong>
-            <strong style="font-size: 30px">@Model?.Sum(item => item.Quantity * item.Price).ToString("C")</strong>
+        <div class="left-side">
+            <div class="cart-summary">
+                <strong style="font-size: 40px">Total:</strong>
+                <strong style="font-size: 30px">@Model?.Sum(item => item.Quantity * item.Price).ToString("C")</strong>
+            </div>
             <div style="height: 25px"></div>
-            @using (Html.BeginForm("ClearCart", "Cart", FormMethod.Post))
-            {
-            <button type="submit" class="btn clear-cart btn-common-size">Clear Cart</button>
-            }
-            <div style="height: 10px"></div>
-            @using (Html.BeginForm("Purchase", "Cart", FormMethod.Post))
-            {
-            <button type="submit" class="btn purchase btn-common-size">Purchase</button>
-            }
+            <div class="button-holder">
+
+                @using (Html.BeginForm("ClearCart", "Cart", FormMethod.Post))
+                {
+                    <button type="submit" class="btn clear-cart btn-common-size">Clear Cart</button>
+                }
+                <div style="height: 10px"></div>
+                @using (Html.BeginForm("Purchase", "Cart", FormMethod.Post))
+                {
+                    <button type="submit" class="btn purchase btn-common-size">Purchase</button>
+                }
+            </div>
         </div>
     </div>
 </div>
@@ -86,12 +91,27 @@ ViewData["Title"] = "Cart";
         flex: 3; /* Adjust based on preference */
     }
 
-    .cart-summary {
+    .left-side {
         flex: 1; /* Adjust based on preference */
+        flex-direction: column;
+    }
+
+    .cart-summary {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         padding: 20px;
+        background: white;
+        opacity: 65%;
+        border: solid 3px grey;
+    }
+    
+    .button-holder {
+        display: flex;
+        flex-direction: row; /* Align items horizontally */
+        justify-content: center; /* Center the buttons horizontally */
+        align-items: center; /* Center the buttons vertically */
+        gap: 10px; /* Add space between the buttons */
     }
 
     .btn-danger {
@@ -155,5 +175,7 @@ ViewData["Title"] = "Cart";
         overflow-y: auto;
         margin-top: 20px;
         margin-bottom: 20px;
+        background: white;
+        opacity: 65%;
     }
 </style>

@@ -6,24 +6,23 @@
         fetch(`/Cart/AddToCart`, {method: 'POST',body: JSON.stringify(item),headers: {'Content-Type': 'application/json'}})
             .then(response => {
                 if (response.ok) {
-                    window.location.href = '/Cart';
+                    alert("Item added to cart!");
+                } else{
+                    window.location.reload();
                 }
                 return response.json();
             });
     }
+    
     document.addEventListener("DOMContentLoaded", function() {
-        // Get the description box element
-        var descriptionBox = document.querySelector('.description-box');
-
-        // Get the image element
-        var image = document.querySelector('.item-container img');
-
-        // Set the image height equal to the description box height
+        let descriptionBox = document.querySelector('.description-box');
+        let image = document.querySelector('.item-container img');
         image.style.height = `${descriptionBox.offsetHeight}px`;
     });
 
 </script>
 
+@await Html.PartialAsync("_ErrorPopup")
 <div class="container text-center">
     <div class="header-row">
         <a asp-action="Index" asp-controller="Home" class="flex-row btn btn-primary back-button">
@@ -71,6 +70,9 @@
 </div>
 
 <style>
+    h1{
+        color: white;    
+    }
     .header-row {
         display: flex;
         align-items: center;
@@ -78,18 +80,18 @@
     }
 
     .back-button {
-        margin-right: 20px; /* Adjust spacing between button and title */
+        margin-right: 20px; 
     }
 
     .item-container {
         display: flex;
-        align-items: end; /* Ensure children stretch to fill the container */
+        align-items: end; 
     }
 
     .item-container img {
-        width: 30vw; /* Adjust based on desired width relative to screen size */
-        /* fill the space even if requires strech*/
+        width: 30vw;
         object-fit: cover;
+        border: solid 3px white;
     }
 
     .description-box {
@@ -103,11 +105,16 @@
         height: 200px; /* Fixed height */
         overflow-y: auto; /* Enable vertical scrolling */
         width: 60vw; /* Adjust based on desired width relative to screen size */
+        background: white;
+        opacity: 70%;
     }
 
     .table {
         margin-left: auto;
         margin-right: auto;
+        background: white;
+        opacity: 65%;
+        border: solid 3px grey;
     }
 
     .table td, .table th {
