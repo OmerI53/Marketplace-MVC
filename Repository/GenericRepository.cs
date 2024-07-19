@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using TestMVC.Data;
 using TestMVC.Models;
 
 namespace TestMVC.Repository;
@@ -62,7 +61,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         return await _set.Where(predicate).ToListAsync();
     }
 
-    public async Task<T> GetByIdWithIncludesAsync(T? id, params Expression<Func<T, object>>[] includes)
+    public async Task<T> GetByIdWithIncludesAsync(T id, params Expression<Func<T, object>>[] includes)
     {
         var query = _set.AsQueryable();
 
@@ -71,7 +70,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
             query = query.Include(include);
         }
 
-        return await query.SingleOrDefaultAsync(e => EF.Property<string>(e, "Id") == id);
+        return (await query.SingleOrDefaultAsync(e => Equals(EF.Property<string>(e, "Id"), id)))!;
     }
 
     public async Task<IEnumerable<T>> GetAllWithIncludesAsync(params Expression<Func<T, object>>[] includes)

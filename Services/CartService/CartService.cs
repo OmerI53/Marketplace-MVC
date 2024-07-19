@@ -20,7 +20,7 @@ public class CartService : ICartService
         {
             for (var i = 0; i < item.Quantity; i++)
             {
-                var success = _userItemService.ChangeQuantity(item.ItemId, item.UserId,false);
+                var success = _userItemService.ChangeQuantity(item.ItemId, item.SellerId,false);
                 if (!success)
                 {
                     throw new Exception("Failed to purchase item");

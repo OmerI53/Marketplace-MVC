@@ -1,4 +1,5 @@
-# Comp391-C-Test-MVC
+# MarketplaceMVC
 
-a sample MVC project for learning the asp.net core MVC framework
+a sample MVC project for learning the asp.net core MVC framework.
+
 

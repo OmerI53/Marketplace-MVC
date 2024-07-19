@@ -22,8 +22,8 @@ public class UserController : Controller
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var user = _userService.GetUserById(userId);
-
-        foreach (var item in user.UserItems)
+        
+        foreach (var item in user!.UserItems)
         {
             item.Item = (await _itemService.GetItemById(item.ItemId)!)!;
         }

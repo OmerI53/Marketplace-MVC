@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using TestMVC.Data;
+using TestMVC.Models.Entity;
 using TestMVC.Repository;
 using TestMVC.Services.CartService;
 using TestMVC.Services.ItemService;

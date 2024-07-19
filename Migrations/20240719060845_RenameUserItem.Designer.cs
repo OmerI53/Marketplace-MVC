@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TestMVC.Data;
 using TestMVC.Repository;
 
 #nullable disable
@@ -12,8 +11,8 @@ using TestMVC.Repository;
 namespace TestMVC.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240717063852_UserItemAdded")]
-    partial class UserItemAdded
+    [Migration("20240719060845_RenameUserItem")]
+    partial class RenameUserItem
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -155,7 +154,7 @@ namespace TestMVC.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("MarketplaceMVC.Data.User", b =>
+            modelBuilder.Entity("TestMVC.Models.Entity.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
@@ -181,7 +180,6 @@ namespace TestMVC.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("NormalizedEmail")
@@ -205,7 +203,6 @@ namespace TestMVC.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("Surname")
-                        .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -227,7 +224,31 @@ namespace TestMVC.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("MarketplaceMVC.Models.Item", b =>
+            modelBuilder.Entity("TestMVC.Models.Entity.UserItem", b =>
+                {
+                    b.Property<long>("ItemId")
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(0);
+
+                    b.Property<string>("SellerId")
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)")
+                        .HasColumnOrder(1);
+
+                    b.Property<float>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("ItemId", "SellerId");
+
+                    b.HasIndex("SellerId");
+
+                    b.ToTable("UserItems");
+                });
+
+            modelBuilder.Entity("TestMVC.Models.Item", b =>
                 {
                     b.Property<long?>("Id")
                         .ValueGeneratedOnAdd()
@@ -253,29 +274,6 @@ namespace TestMVC.Migrations
                     b.ToTable("Item");
                 });
 
-            modelBuilder.Entity("MarketplaceMVC.Models.UserItem", b =>
-                {
-                    b.Property<long>("ItemId")
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(0);
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("varchar(255)")
-                        .HasColumnOrder(1);
-
-                    b.Property<float>("Price")
-                        .HasColumnType("float");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("ItemId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserItems");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -287,7 +285,7 @@ namespace TestMVC.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("MarketplaceMVC.Data.User", null)
+                    b.HasOne("TestMVC.Models.Entity.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -296,7 +294,7 @@ namespace TestMVC.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("MarketplaceMVC.Data.User", null)
+                    b.HasOne("TestMVC.Models.Entity.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -311,7 +309,7 @@ namespace TestMVC.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MarketplaceMVC.Data.User", null)
+                    b.HasOne("TestMVC.Models.Entity.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -320,38 +318,38 @@ namespace TestMVC.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("MarketplaceMVC.Data.User", null)
+                    b.HasOne("TestMVC.Models.Entity.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MarketplaceMVC.Models.UserItem", b =>
+            modelBuilder.Entity("TestMVC.Models.Entity.UserItem", b =>
                 {
-                    b.HasOne("MarketplaceMVC.Models.Item", "Item")
+                    b.HasOne("TestMVC.Models.Item", "Item")
                         .WithMany("UserItems")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MarketplaceMVC.Data.User", "User")
+                    b.HasOne("TestMVC.Models.Entity.User", "Seller")
                         .WithMany("UserItems")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("SellerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Item");
 
-                    b.Navigation("User");
+                    b.Navigation("Seller");
                 });
 
-            modelBuilder.Entity("MarketplaceMVC.Data.User", b =>
+            modelBuilder.Entity("TestMVC.Models.Entity.User", b =>
                 {
                     b.Navigation("UserItems");
                 });
 
-            modelBuilder.Entity("MarketplaceMVC.Models.Item", b =>
+            modelBuilder.Entity("TestMVC.Models.Item", b =>
                 {
                     b.Navigation("UserItems");
                 });

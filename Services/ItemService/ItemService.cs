@@ -1,7 +1,7 @@
 using Bogus;
 using Microsoft.EntityFrameworkCore;
-using TestMVC.Data;
 using TestMVC.Models;
+using TestMVC.Models.Entity;
 using TestMVC.Models.Enum;
 using TestMVC.Repository;
 
@@ -23,7 +23,7 @@ public class ItemService(IGenericRepository<Item> repository) : IItemService
     {
         var random = new Random();
         var vals = Enum.GetValues(typeof(Category));
-        var cat = (Category)vals.GetValue(random.Next(vals.Length));
+        var cat = (Category)(vals.GetValue(random.Next(vals.Length)) ?? Category.Other);
 
         var faker = new Faker();
 
@@ -67,7 +67,7 @@ public class ItemService(IGenericRepository<Item> repository) : IItemService
     {
         var set = repository.GetSet();
         var items = set.Include(u => u.UserItems)!
-            .ThenInclude(ui => ui.User)
+            .ThenInclude(ui => ui.Seller)
             .Select(i => new Item
             {
                 Id = i.Id,
@@ -77,13 +77,13 @@ public class ItemService(IGenericRepository<Item> repository) : IItemService
                 UserItems = i.UserItems!.Select(ui => new UserItem
                 {
                     ItemId = ui.ItemId,
-                    UserId = ui.UserId,
+                    SellerId = ui.SellerId,
                     Quantity = ui.Quantity,
                     Price = ui.Price,
-                    User = new User
+                    Seller = new User
                     {
-                        Id = ui.User.Id,
-                        Name = ui.User.Name
+                        Id = ui.Seller!.Id,
+                        Name = ui.Seller.Name
                     }
                 }).ToList()
             }).FirstOrDefault(u => u.Id == id);

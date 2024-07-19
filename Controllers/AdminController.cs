@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using TestMVC.Data;
 using TestMVC.Models;
+using TestMVC.Models.Entity;
+using TestMVC.Models.Request;
 using TestMVC.Services.ItemService;
 
 namespace TestMVC.Controllers;
@@ -35,7 +36,7 @@ public class AdminController : Controller
     {
         if (ModelState.IsValid)
         {
-            var user = await _userManager.FindByIdAsync(model.UserId);
+            var user = await _userManager.FindByIdAsync(model.UserId!);
             if (user != null)
             {
                 user.UserName = model.UserName;
@@ -43,7 +44,7 @@ public class AdminController : Controller
                 if (role.Count > 0)
                 {
                     await _userManager.RemoveFromRoleAsync(user, role[0]);
-                    await _userManager.AddToRoleAsync(user, model.UserRole);
+                    await _userManager.AddToRoleAsync(user, model.UserRole!);
                 }
 
                 await _userManager.UpdateAsync(user);

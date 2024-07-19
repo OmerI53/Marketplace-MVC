@@ -3,12 +3,12 @@
 
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.EntityFrameworkCore
-@using TestMVC.Data
+@using TestMVC.Models.Entity
 
 @{
     ViewData["Title"] = "User List";
 }
-@model IEnumerable<TestMVC.Data.User>
+@model IEnumerable<TestMVC.Models.Entity.User>
 <script>
         $(document).ready(function() {
             $('.fa-edit').on('click', function() {

@@ -1,4 +1,4 @@
-namespace TestMVC.Models;
+namespace TestMVC.Models.Request;
 
 public class EditUserModel
 {

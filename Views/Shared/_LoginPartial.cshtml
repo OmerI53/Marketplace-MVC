@@ -1,51 +1,65 @@
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@using TestMVC.Data
+@using TestMVC.Models.Entity
 
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
+@{
+    var searchQuery = ViewData["SearchQuery"]?.ToString();
+}
+
 <ul class="navbar-nav w-100">
     @if (SignInManager.IsSignedIn(User))
     {
-    <li class="nav-item">
-        <a id="manage" class="nav-link text-dark bar-text" asp-controller="User" asp-action="Index">Profile</a>
-    </li>
-    @if (await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User) ?? new User(), "Admin"))
-    {
-    <li class="nav-item">
-        <a id="manage" class="nav-link text-dark bar-text" asp-controller="Admin" asp-action="Index">Admin Panel</a>
-    </li>
-    }
-    <div class="d-flex ml-auto">
-        <li class="nav-item justify-content-center">
-            <a id="home-icon" class="btn btn-toolbar" asp-action="Index" asp-controller="Home">
-                <i class="fas fa-home layout-icon"></i>
-            </a>
-        </li>
-        <li class="nav-item justify-content-center">
-            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout"
-                  asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button id="logout" type="submit" class="btn btn-toolbar">
-                    <i class="fas fa-sign-out-alt layout-icon"></i>
+        @if (await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User) ?? new User(), "Admin"))
+        {
+            <li class="nav-item">
+                <a id="manage" class="nav-link text-dark bar-text" asp-controller="Admin" asp-action="Index">Admin Panel</a>
+            </li>
+        }
+        <div class="mx-auto">
+            <form asp-action="Index" asp-controller="Home" class="form-inline">
+                <input type="text" name="searchQuery" value="@searchQuery" placeholder="Search..." class="form-control"/>
+                <button type="submit" class="btn btn-primary ml-2">
+                    <i class="fas fa-search"></i>
                 </button>
             </form>
-        </li>
-        <li class="nav-item justify-content-center">
-            <a id="shopping-cart" class="btn btn-toolbar" asp-action="Index" asp-controller="Cart">
-                <i class="fas fa-shopping-cart layout-icon"></i>
-            </a>
-        </li>
-    </div>
+        </div>
+        <div class="d-flex ml-auto">
+            <li class="nav-item">
+                <a id="manage" class="btn btn-toolbar" asp-controller="User" asp-action="Index">
+                    <i class="fas fa-user layout-icon"></i>
+                </a>
+            </li>
+            <li class="nav-item justify-content-center">
+                <a id="home-icon" class="btn btn-toolbar" asp-action="Index" asp-controller="Home">
+                    <i class="fas fa-home layout-icon"></i>
+                </a>
+            </li>
+            <li class="nav-item justify-content-center">
+                <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout"
+                      asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button id="logout" type="submit" class="btn btn-toolbar">
+                        <i class="fas fa-sign-out-alt layout-icon"></i>
+                    </button>
+                </form>
+            </li>
+            <li class="nav-item justify-content-center">
+                <a id="shopping-cart" class="btn btn-toolbar" asp-action="Index" asp-controller="Cart">
+                    <i class="fas fa-shopping-cart layout-icon"></i>
+                </a>
+            </li>
+        </div>
     }
     else
     {
-    <li class="nav-item">
-        <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </li>
     }
 </ul>
 
@@ -53,23 +67,29 @@
     .navbar-nav > li, .navbar-nav .d-flex {
         display: flex;
         align-items: center;
-        margin-right: 15px; /* Adjust spacing as needed */
+        margin-right: 15px;
     }
 
-    /* Optional: If you want the shopping cart to stand out or have additional styling */
     #shopping-cart {
-        padding: 5px 10px; /* Adjust padding as needed */
-        border-radius: 5px; /* Optional: Adds rounded corners */
+        padding: 5px 10px;
+        border-radius: 5px;
     }
 
     .layout-icon {
         font-size: 35px;
     }
+
     .layout-icon:hover {
-        color: #0040ff; /* Change color on hover */
+        color: #0040ff;
     }
+
     .bar-text {
-        font-weight: bold; /* Makes text bold */
-        font-size: 1.2em; /* Increases the font size; adjust as needed */
+        font-weight: bold;
+        font-size: 1.2em;
+    }
+    .mx-auto {
+        width: 80%;
+        display: flex;
+        justify-content: center;
     }
 </style>

@@ -7,7 +7,7 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace TestMVC.Migrations
 {
     /// <inheritdoc />
-    public partial class UserItemAdded : Migration
+    public partial class RenameUserItem : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -35,8 +35,8 @@ namespace TestMVC.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "varchar(255)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(50)", nullable: false),
-                    Surname = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", nullable: true),
+                    Surname = table.Column<string>(type: "nvarchar(50)", nullable: true),
                     UserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
@@ -191,16 +191,16 @@ namespace TestMVC.Migrations
                 columns: table => new
                 {
                     ItemId = table.Column<long>(type: "bigint", nullable: false),
-                    UserId = table.Column<string>(type: "varchar(255)", nullable: false),
+                    SellerId = table.Column<string>(type: "varchar(36)", maxLength: 36, nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<float>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserItems", x => new { x.ItemId, x.UserId });
+                    table.PrimaryKey("PK_UserItems", x => new { x.ItemId, x.SellerId });
                     table.ForeignKey(
-                        name: "FK_UserItems_AspNetUsers_UserId",
-                        column: x => x.UserId,
+                        name: "FK_UserItems_AspNetUsers_SellerId",
+                        column: x => x.SellerId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -251,9 +251,9 @@ namespace TestMVC.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserItems_UserId",
+                name: "IX_UserItems_SellerId",
                 table: "UserItems",
-                column: "UserId");
+                column: "SellerId");
         }
 
         /// <inheritdoc />

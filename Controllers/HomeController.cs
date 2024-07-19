@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TestMVC.Models;
+using TestMVC.Models.Request;
 using TestMVC.Services.ItemService;
 
 namespace TestMVC.Controllers;
@@ -18,13 +19,9 @@ public class HomeController : Controller
         _itemService = itemService;
     }
 
-    public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
+    public async Task<IActionResult> Index(string? searchQuery, int page = 1, int pageSize = 10)
     {
-        string? searchQuery = Request.Query["searchQuery"];
-        ViewData["SearchQuery"] = searchQuery;
-
         var itemsQuery = await _itemService.GetItemsAlike(searchQuery);
-
         if (itemsQuery == null)
         {
             return View(new List<Item>());

@@ -45,7 +45,7 @@ ViewData["Title"] = "Cart";
                             @using (Html.BeginForm("RemoveFromCart", "Cart", FormMethod.Post))
                             {
                             <input type="hidden" name="itemId" value="@item.ItemId"/>
-                            <input type="hidden" name="userId" value="@item.UserId"/>
+                            <input type="hidden" name="userId" value="@item.SellerId"/>
                             <button type="submit" class="btn btn-danger">
                                 <i class="fas fa-trash"></i>
                             </button>

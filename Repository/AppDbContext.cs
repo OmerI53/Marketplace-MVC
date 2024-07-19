@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using TestMVC.Data;
 using TestMVC.Models;
+using TestMVC.Models.Entity;
 
 namespace TestMVC.Repository;
 
@@ -16,7 +16,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<UserItem>()
-            .HasKey(ui => new { ui.ItemId, ui.UserId });
+            .HasKey(ui => new { ui.ItemId, UserId = ui.SellerId });
 
         modelBuilder.Entity<UserItem>()
             .HasOne(ui => ui.Item)
@@ -24,8 +24,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
             .HasForeignKey(ui => ui.ItemId);
 
         modelBuilder.Entity<UserItem>()
-            .HasOne(ui => ui.User)
+            .HasOne(ui => ui.Seller)
             .WithMany(u => u.UserItems)
-            .HasForeignKey(ui => ui.UserId);
+            .HasForeignKey(ui => ui.SellerId);
     }
 }

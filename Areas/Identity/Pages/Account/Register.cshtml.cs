@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using TestMVC.Data;
+using TestMVC.Models.Entity;
 
 namespace TestMVC.Areas.Identity.Pages.Account
 {
@@ -147,8 +147,8 @@ namespace TestMVC.Areas.Identity.Pages.Account
             }
             catch
             {
-                throw new InvalidOperationException($"Can't create an instance of '{nameof(Data.User)}'. " +
-                                                    $"Ensure that '{nameof(Data.User)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+                throw new InvalidOperationException($"Can't create an instance of '{nameof(Models.Entity.User)}'. " +
+                                                    $"Ensure that '{nameof(Models.Entity.User)}' is not an abstract class and has a parameterless constructor, or alternatively " +
                                                     $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }
         }

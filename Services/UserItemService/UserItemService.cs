@@ -1,5 +1,5 @@
 using System.Globalization;
-using TestMVC.Models;
+using TestMVC.Models.Entity;
 using TestMVC.Models.Request;
 using TestMVC.Repository;
 
@@ -17,7 +17,7 @@ public class UserItemService : IUserItemService
 
     public bool CreateUserItem(CreateUserItemModel request, string? userId)
     {
-        var exists = _repository.FindAsync(item => item.ItemId == request.Id && item.UserId == userId).Result
+        var exists = _repository.FindAsync(item => item.ItemId == request.Id && item.SellerId == userId).Result
             .FirstOrDefault();
         if (exists != null)
         {
@@ -28,7 +28,7 @@ public class UserItemService : IUserItemService
         var userItem = new UserItem
         {
             ItemId = request.Id,
-            UserId = userId!,
+            SellerId = userId!,
             Quantity = request.Quantity,
             Price = float.Parse(request.Price, CultureInfo.InvariantCulture),
         };
@@ -39,7 +39,7 @@ public class UserItemService : IUserItemService
 
     public bool ChangeQuantity(long itemId, string? userId, bool increase)
     {
-        var userItem = _repository.FindAsync(x => x.ItemId == itemId && x.UserId == userId).Result.FirstOrDefault();
+        var userItem = _repository.FindAsync(x => x.ItemId == itemId && x.SellerId == userId).Result.FirstOrDefault();
 
         if (userItem == null)
         {
@@ -66,7 +66,7 @@ public class UserItemService : IUserItemService
 
     public bool DeleteUserItem(long itemId, string? userId)
     {
-        var userItem = _repository.FindAsync(x => x.ItemId == itemId && x.UserId == userId).Result.FirstOrDefault();
+        var userItem = _repository.FindAsync(x => x.ItemId == itemId && x.SellerId == userId).Result.FirstOrDefault();
         if (userItem == null)
         {
             return false;

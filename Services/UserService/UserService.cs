@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using TestMVC.Data;
 using TestMVC.Models;
+using TestMVC.Models.Entity;
 using TestMVC.Repository;
 
 namespace TestMVC.Services.UserService;
@@ -16,9 +16,9 @@ public class UserService : IUserService
         _repository = repository;
     }
 
-    public List<User?> GetAllUsers()
+    public List<User> GetAllUsers()
     {
-        return _repository.GetAll().ToList();
+        return _repository.GetAll()!.ToList();
     }
 
     public User? GetUserById(string? id)
@@ -34,12 +34,12 @@ public class UserService : IUserService
                 UserItems = u.UserItems.Select(ui => new UserItem
                 {
                     ItemId = ui.ItemId,
-                    UserId = ui.UserId,
+                    SellerId = ui.SellerId,
                     Quantity = ui.Quantity,
                     Price = ui.Price,
                     Item = new Item
                     {
-                        Id = ui.Item.Id,
+                        Id = ui.Item!.Id,
                         ItemName = ui.Item.ItemName,
                         Description = ui.Item.Description,
                         InStock = ui.Item.InStock,
@@ -52,7 +52,7 @@ public class UserService : IUserService
 
     public User? GetUserByName(string name)
     {
-        return _repository.GetAll().FirstOrDefault(u => u!.Name == name);
+        return _repository.GetAll()!.FirstOrDefault(u => u!.Name == name);
     }
 
     public Task<User?> GetUserByData(string data)

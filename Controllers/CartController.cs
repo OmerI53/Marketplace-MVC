@@ -29,7 +29,7 @@ public class CartController : Controller
         CartItem? existingItem = null;
         if (cart.Count > 0)
         {
-            existingItem = cart.FirstOrDefault(x => x.ItemId == request.ItemId && x.UserId == request.UserId);
+            existingItem = cart.FirstOrDefault(x => x.ItemId == request.ItemId && x.SellerId == request.SellerId);
         }
 
         if (existingItem != null)
@@ -50,7 +50,7 @@ public class CartController : Controller
     public IActionResult RemoveFromCart(int itemId, string userId)
     {
         var cart = GetCart(HttpContext);
-        var item = cart.FirstOrDefault(x => x.ItemId == itemId && x.UserId == userId);
+        var item = cart.FirstOrDefault(x => x.ItemId == itemId && x.SellerId == userId);
         if (item != null)
         {
             cart.Remove(item);
@@ -84,9 +84,14 @@ public class CartController : Controller
         return RedirectToAction("Index");
     }
 
-    private List<CartItem> GetCart(HttpContext context)
+    private static List<CartItem> GetCart(HttpContext context)
     {
         var cookie = context.Request.Cookies[CartCookieKey];
-        return cookie == null ? [] : JsonConvert.DeserializeObject<List<CartItem>>(cookie)!;
+        if (cookie is not (null or "[null]")) return JsonConvert.DeserializeObject<List<CartItem>>(cookie)!;
+        
+        //A null item is Added to the card
+        context.Response.Cookies.Delete(CartCookieKey);
+        context.Response.Cookies.Append(CartCookieKey, "[]");
+        return [];
     }
 }

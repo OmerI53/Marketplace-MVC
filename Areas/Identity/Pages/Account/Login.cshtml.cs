@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using TestMVC.Data;
+using TestMVC.Models.Entity;
 
 namespace TestMVC.Areas.Identity.Pages.Account
 {

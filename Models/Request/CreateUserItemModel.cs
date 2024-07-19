@@ -6,7 +6,7 @@ public class CreateUserItemModel
 {
     public long Id { get; set; }
     public int Quantity { get; set; }
-    public string Price { get; set; }
+    public required string Price { get; set; }
 
     public Category Category { get; set; }
 }
