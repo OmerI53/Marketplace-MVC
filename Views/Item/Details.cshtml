@@ -7,8 +7,6 @@
             .then(response => {
                 if (response.ok) {
                     alert("Item added to cart!");
-                } else{
-                    window.location.reload();
                 }
                 return response.json();
             });

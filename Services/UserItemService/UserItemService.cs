@@ -1,4 +1,5 @@
 using System.Globalization;
+using Microsoft.Data.SqlClient;
 using TestMVC.Models.Entity;
 using TestMVC.Models.Request;
 using TestMVC.Repository;
@@ -76,8 +77,14 @@ public class UserItemService : IUserItemService
         return true;
     }
 
-    public int GetQuantity(long itemItemId)
+    public int GetQuantity(long itemId, string sellerId)
     {
-        return _repository.GetById(itemItemId)!.Quantity;
+        const string sql = "SELECT FROM UserItems WHERE ItemId = @itemId AND SellerId = @sellerId";
+        var parameters = new[]
+        {
+            new SqlParameter("@itemId", itemId),
+            new SqlParameter("@sellerId", sellerId),
+        };
+        return _repository.ExecuteRawSql(sql, parameters).FirstOrDefault().Quantity;
     }
 }

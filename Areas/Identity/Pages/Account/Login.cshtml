@@ -7,7 +7,7 @@
 
 <div class="row justify-content-center">
     <div class="col-md-4">
-        <h1>@ViewData["Title"]</h1>
+        <h1 style="color: white">@ViewData["Title"]</h1>
         <section>
             <form id="account" method="post">
                 <hr/>
@@ -23,7 +23,7 @@
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
                 <div class="checkbox mb-3 justify-content-start">
-                    <label asp-for="Input.RememberMe" class="form-label">
+                    <label asp-for="Input.RememberMe" class="form-label" style="color:white;">
                         <input class="form-check-input" asp-for="Input.RememberMe"/>
                         @Html.DisplayNameFor(m => m.Input.RememberMe)
                     </label>

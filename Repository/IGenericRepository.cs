@@ -17,7 +17,7 @@ public interface IGenericRepository<T> where T : class
     Task<T> GetByIdWithIncludesAsync(T id, params Expression<Func<T, object>>[] includes);
     Task<IEnumerable<T>> GetAllWithIncludesAsync(params Expression<Func<T, object>>[] includes);
     Task<List<TResult>> GetCustomAsync<TResult>(Expression<Func<T, TResult>> selector);
-    void ExecuteRawSql(string sql, params object[] parameters);
+    IQueryable<T> ExecuteRawSql(string sql, params object[] parameters);
     public DbSet<T> GetSet();
     AppDbContext GetContext();
 }

@@ -31,7 +31,7 @@ public class CartService : ICartService
 
     private void ValidatePurchaseCount(List<CartItem> cart)
     {
-        if ((from item in cart let itemQuantity = _userItemService.GetQuantity(item.ItemId) where item.Quantity > itemQuantity select item).Any())
+        if ((from item in cart let itemQuantity = _userItemService.GetQuantity(item.ItemId,item.SellerId) where item.Quantity > itemQuantity select item).Any())
         {
             throw new Exception("Not enough items in stock");
         }

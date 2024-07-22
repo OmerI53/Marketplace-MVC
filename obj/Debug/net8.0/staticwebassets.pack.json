@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets/favicon.png"
     },
     {
+      "Id": "/Users/omerislam/Desktop/Ömer/index/Marketplace-MVC/wwwroot/images/background.jpg",
+      "PackagePath": "staticwebassets/images/background.jpg"
+    },
+    {
       "Id": "/Users/omerislam/Desktop/Ömer/index/Marketplace-MVC/wwwroot/images/categories/Clothes.PNG",
       "PackagePath": "staticwebassets/images/categories/Clothes.PNG"
     },
