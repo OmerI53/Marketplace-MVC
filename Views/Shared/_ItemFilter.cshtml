@@ -1,0 +1,23 @@
+<form class="filter-form filter" method="get">
+    <div class="form-group">
+        <label for="category">Category</label>
+        <select id="category" name="Category" class="form-control">
+            <option value="">All</option>
+        </select>
+    </div>
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="inStock" name="InStock" value="true">
+        <label class="form-check-label" for="inStock">In Stock Only</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Filter</button>
+</form>
+
+<style>
+
+    .filter-form {
+        background-color: white;
+        opacity: 85%;
+        padding: 20px;
+        border-radius: 5px;
+    }
+</style>

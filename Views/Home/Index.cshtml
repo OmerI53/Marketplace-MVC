@@ -8,34 +8,39 @@ int currentPage = ViewBag.CurrentPage;
 
 
 @await Html.PartialAsync("_ErrorPopup")
-<div class="container mt-4 flex-y scrollable-container">
-    <div class="row">
-        @foreach (var item in Model.Take(12))
-        {
-        <div class="col-md-4 mb-4">
-            <div class="card card-depth">
-                <div class="card-body">
-                    <h5 class="card-title">@item.ItemName</h5>
-                    <p class="card-text">@item.Description</p>
-                    <p class="card-text">
-                        <strong>Category:</strong> @item.Category.ToString()
-                    </p>
-                    @if (item.InStock)
-                    {
-                    <a asp-controller="Item" asp-action="Details" asp-route-id="@item.Id" class="float-right">
-                        <i class="fas fa-search"></i>
-                    </a>
-                    }
-                    else
-                    {
-                    <span class="float-right text-muted">
-                                <i class="fas fa-search"></i>
-                            </span>
-                    }
+<div class="row main-f">
+    <div class="container flex-y scrollable-container">
+        <div class="row">
+            @foreach (var item in Model.Take(12))
+            {
+            <div class="col-md-4 mb-4">
+                <div class="card card-depth">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.ItemName</h5>
+                        <p class="card-text">@item.Description</p>
+                        <p class="card-text">
+                            <strong>Category:</strong> @item.Category.ToString()
+                        </p>
+                        @if (item.InStock)
+                        {
+                        <a asp-controller="Item" asp-action="Details" asp-route-id="@item.Id" class="float-right">
+                            <i class="fas fa-search"></i>
+                        </a>
+                        }
+                        else
+                        {
+                        <span class="float-right text-muted">
+                                    <i class="fas fa-search"></i>
+                                </span>
+                        }
+                    </div>
                 </div>
             </div>
+            }
         </div>
-        }
+    </div>
+    <div class="col-3 filter-cont">
+        @await Html.PartialAsync("_ItemFilter")
     </div>
 </div>
 <br/>
@@ -53,8 +58,16 @@ int currentPage = ViewBag.CurrentPage;
 </div>
 
 <style>
+    .main-f {
+        margin-top: 50px;
+    }
+
+    .filter-cont {
+        margin-right: 50px;
+    }
+
     .scrollable-container {
-        max-height: 600px; /* Adjust based on your needs */
+        max-height: 600px;
         min-height: 600px;
         height: 100%;
         overflow-y: auto;
