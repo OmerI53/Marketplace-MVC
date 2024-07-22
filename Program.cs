@@ -4,6 +4,7 @@ using TestMVC.Models.Entity;
 using TestMVC.Repository;
 using TestMVC.Services.CartService;
 using TestMVC.Services.ItemService;
+using TestMVC.Services.PurchaseService;
 using TestMVC.Services.UserItemService;
 using TestMVC.Services.UserService;
 
@@ -12,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddDbContext<AppDbContext>(options =>
     {
         options.UseMySQL(builder.Configuration.GetConnectionString("MVCConnection") ?? string.Empty);
+        //options.EnableSensitiveDataLogging();
     });
 
     builder.Services.AddDefaultIdentity<User>(options =>
@@ -40,6 +42,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<IUserService, UserService>();
     builder.Services.AddScoped<IUserItemService, UserItemService>();
     builder.Services.AddScoped<ICartService, CartService>();
+    builder.Services.AddScoped<IPurchaseService,PurchaseService>();
 }
 
 var app = builder.Build();

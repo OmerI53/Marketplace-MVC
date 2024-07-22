@@ -1,19 +1,23 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using TestMVC.Models;
 using TestMVC.Models.Request;
 using TestMVC.Services.CartService;
+using TestMVC.Services.UserService;
 
 namespace TestMVC.Controllers;
 
 public class CartController : Controller
 {
     private readonly ICartService _cartService;
+    private readonly IUserService _userService;
     private const string CartCookieKey = "Cart";
 
-    public CartController(ICartService cartService)
+    public CartController(ICartService cartService, IUserService userService)
     {
         _cartService = cartService;
+        _userService = userService;
     }
 
     public IActionResult Index()
@@ -85,12 +89,21 @@ public class CartController : Controller
         return RedirectToAction("Index");
     }
 
-    public IActionResult Purchase()
+    public async Task<IActionResult> Purchase()
     {
         var cart = GetCart(HttpContext);
         try
         {
-            _cartService.Purchase(cart);
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user = _userService.GetBaseUserById(userId);
+            if (user == null)
+            {
+                TempData["ErrorMessage"] = "User not found";
+                return RedirectToAction("Index");
+            }
+
+            await _cartService.Purchase(cart, user);
+            return ClearCart();
         }
         catch (Exception e)
         {
@@ -104,8 +117,7 @@ public class CartController : Controller
     {
         var cookie = context.Request.Cookies[CartCookieKey];
         if (cookie is not (null or "[null]")) return JsonConvert.DeserializeObject<List<CartItem>>(cookie)!;
-
-        //A null item is Added to the card
+        
         context.Response.Cookies.Delete(CartCookieKey);
         context.Response.Cookies.Append(CartCookieKey, "[]");
         return [];

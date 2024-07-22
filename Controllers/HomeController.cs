@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TestMVC.Models;
+using TestMVC.Models.Entity;
 using TestMVC.Models.Request;
 using TestMVC.Services.ItemService;
 

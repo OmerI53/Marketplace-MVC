@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using MySql.Data.MySqlClient;
 using TestMVC.Models;
 
 namespace TestMVC.Repository;

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TestMVC.Models;
+using TestMVC.Models.Entity;
 using TestMVC.Services.ItemService;
 
 namespace TestMVC.Controllers;

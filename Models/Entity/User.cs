@@ -14,4 +14,7 @@ public class User : IdentityUser
     public string? Surname { get; set; }
 
     public ICollection<UserItem> UserItems { get; set; } = new List<UserItem>();
+
+    // ReSharper disable once CollectionNeverUpdated.Global
+    public ICollection<PurchasedItem> Purchases { get; set; } = new List<PurchasedItem>();
 }

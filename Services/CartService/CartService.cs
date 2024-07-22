@@ -1,5 +1,6 @@
-using Newtonsoft.Json;
 using TestMVC.Models;
+using TestMVC.Models.Entity;
+using TestMVC.Services.PurchaseService;
 using TestMVC.Services.UserItemService;
 
 namespace TestMVC.Services.CartService;
@@ -7,31 +8,37 @@ namespace TestMVC.Services.CartService;
 public class CartService : ICartService
 {
     private readonly IUserItemService _userItemService;
+    private readonly IPurchaseService _purchaseService;
 
-    public CartService(IUserItemService userItemService)
+    public CartService(IUserItemService userItemService, IPurchaseService purchaseService)
     {
         _userItemService = userItemService;
+        _purchaseService = purchaseService;
     }
 
-    public void Purchase(List<CartItem> cart)
+    public async Task Purchase(List<CartItem> cart, User user)
     {
         ValidatePurchaseCount(cart);
         foreach (var item in cart)
         {
-            for (var i = 0; i < item.Quantity; i++)
+            var success = _userItemService.ChangeQuantity(item.ItemId, item.SellerId, -item.Quantity);
+            if (success)
+            { 
+                await _purchaseService.CreatePurchase(user,item);
+            }
+            else
             {
-                var success = _userItemService.ChangeQuantity(item.ItemId, item.SellerId,false);
-                if (!success)
-                {
-                    throw new Exception("Failed to purchase item");
-                }
+                throw new Exception("Failed to purchase item");
             }
         }
     }
 
     private void ValidatePurchaseCount(List<CartItem> cart)
     {
-        if ((from item in cart let itemQuantity = _userItemService.GetQuantity(item.ItemId,item.SellerId) where item.Quantity > itemQuantity select item).Any())
+        if ((from item in cart
+                let itemQuantity = _userItemService.GetQuantity(item.ItemId, item.SellerId)
+                where item.Quantity > itemQuantity
+                select item).Any())
         {
             throw new Exception("Not enough items in stock");
         }

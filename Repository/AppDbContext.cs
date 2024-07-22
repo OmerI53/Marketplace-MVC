@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using TestMVC.Models;
 using TestMVC.Models.Entity;
 
 namespace TestMVC.Repository;
@@ -10,6 +9,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
 {
     public DbSet<Item> Items { get; set; }
     public DbSet<UserItem> UserItems { get; set; }
+    public DbSet<PurchasedItem> PurchasedItems { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -27,5 +27,15 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
             .HasOne(ui => ui.Seller)
             .WithMany(u => u.UserItems)
             .HasForeignKey(ui => ui.SellerId);
+
+        modelBuilder.Entity<PurchasedItem>()
+            .HasOne(pi => pi.Item)
+            .WithMany(i => i.PurchasedItems)
+            .HasForeignKey(pi => pi.ItemId);
+
+        modelBuilder.Entity<PurchasedItem>()
+            .HasOne(pi => pi.Buyer)
+            .WithMany(b => b.Purchases)
+            .HasForeignKey(pi => pi.BuyerId);
     }
 }

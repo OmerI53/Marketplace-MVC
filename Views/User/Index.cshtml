@@ -1,8 +1,3 @@
-@{
-ViewData["Title"] = "Home Page";
-}
-
-
 @inject UserManager<User> UserManager
 @using Microsoft.AspNetCore.Identity
 @using TestMVC.Models.Entity
@@ -29,67 +24,83 @@ ViewData["Title"] = "Home Page";
             });
     }
 </script>
+@{
+    var userId = UserManager.GetUserId(User);
+    var userEntity = await UserManager.FindByIdAsync(userId);
+    if (userEntity == null)
+    {
+        TempData["ErrorMessage"] = "User not found";
+        return;
+    }
+
+    var role = UserManager.GetRolesAsync(userEntity).Result.FirstOrDefault();
+}
 
 
 @await Html.PartialAsync("_ErrorPopup")
 <div class="flex-container">
     <div class="user-info">
-        <img src="@($"favicon.png")" alt="default profile picture"
+        <img src="@($"/images/user/{role}.jpg")" alt="default profile picture"
              style="width: 400px; height: auto; border: solid; color: white"/>
         <h1>@Model.Name</h1>
+        @if (!string.Equals(role,"BasicUser", StringComparison.OrdinalIgnoreCase))
+        {
+            <button type="button" class="btn profile-btn" data-toggle="modal" data-target="#SellItemModal">
+                Sell Items
+            </button>
+        }
     </div>
-    @if (!await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User) ?? new User(), "BasicUser"))
-    {
+
     <div class="user-items">
-        <table class="table">
-            <h1 style="color:white;">Collection</h1>
-            <thead>
-            <tr>
-                <th> Name</th>
-                <th> Category</th>
-                <th> Price</th>
-                <th> Quantity</th>
-                <th> Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var item in Model.UserItems)
-            {
-            <tr>
-                <td> @item.Item!.ItemName </td>
-                <td> @item.Item.Category </td>
-                <td> @item.Price </td>
-                <td> @item.Quantity </td>
-                <td>
-                    <div class="flex-row">
-                        <button class="btn btn-primary btn-sm" onclick="changeQuantity('@item.ItemId', true)">
-                            +
-                        </button>
-                        <button class="btn btn-danger btn-sm" onclick="changeQuantity('@item.ItemId', false)">
-                            -
-                        </button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteItem('@item.ItemId')">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            }
-            </tbody>
-        </table>
-        <button type="button" class="btn sell-button" data-toggle="modal" data-target="#exampleModal">
-            Sell Items
-        </button>
+        @if (!string.Equals(role,"BasicUser", StringComparison.OrdinalIgnoreCase))
+        {
+            <table class="table scrollable-table">
+                <h1 style="color:white;">Collection</h1>
+                <thead>
+                <tr>
+                    <th> Name</th>
+                    <th> Category</th>
+                    <th> Price</th>
+                    <th> Quantity</th>
+                    <th> Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model.UserItems)
+                {
+                    <tr>
+                        <td> @item.Item!.ItemName </td>
+                        <td> @item.Item.Category </td>
+                        <td> @item.Price </td>
+                        <td> @item.Quantity </td>
+                        <td>
+                            <div class="flex-row">
+                                <button class="btn btn-primary btn-sm" onclick="changeQuantity('@item.ItemId', true)">
+                                    +
+                                </button>
+                                <button class="btn btn-danger btn-sm" onclick="changeQuantity('@item.ItemId', false)">
+                                    -
+                                </button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteItem('@item.ItemId')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+        @await Html.PartialAsync("_PurchaseHistory", Model.Purchases)
     </div>
-    }
 </div>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="SellItemModal" tabindex="-1" role="dialog" aria-labelledby="SellItemModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Sell Item</h5>
+                <h5 class="modal-title" id="SellItemModalLabel">Sell Item</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -100,7 +111,6 @@ ViewData["Title"] = "Home Page";
         </div>
     </div>
 </div>
-
 <style>
     .flex-container {
         display: flex;
@@ -123,6 +133,12 @@ ViewData["Title"] = "Home Page";
         border: solid 3px white;
     }
 
+    .scrollable-table {
+        max-height: 400px;
+        overflow-y: auto;
+        width: 100%;
+    }
+
     .btn-sm {
         padding: 3px 6px;
         font-size: 10px;
@@ -137,11 +153,11 @@ ViewData["Title"] = "Home Page";
         color: white;
     }
 
-    .sell-button {
+    .profile-btn {
         background: white;
     }
 
-    .sell-button:hover {
+    .profile-btn:hover {
         background: grey;
     }
 </style>

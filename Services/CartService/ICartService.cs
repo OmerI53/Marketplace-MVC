@@ -1,8 +1,9 @@
 using TestMVC.Models;
+using TestMVC.Models.Entity;
 
 namespace TestMVC.Services.CartService;
 
 public interface ICartService
 {
-    void Purchase(List<CartItem> cart);
+    Task Purchase(List<CartItem> cart, User userId);
 }

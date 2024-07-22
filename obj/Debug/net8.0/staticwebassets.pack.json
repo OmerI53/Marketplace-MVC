@@ -33,6 +33,18 @@
       "PackagePath": "staticwebassets/images/categories/Other.PNG"
     },
     {
+      "Id": "/Users/omerislam/Desktop/Ömer/index/Marketplace-MVC/wwwroot/images/user/Admin.jpg",
+      "PackagePath": "staticwebassets/images/user/Admin.jpg"
+    },
+    {
+      "Id": "/Users/omerislam/Desktop/Ömer/index/Marketplace-MVC/wwwroot/images/user/BasicUser.jpg",
+      "PackagePath": "staticwebassets/images/user/BasicUser.jpg"
+    },
+    {
+      "Id": "/Users/omerislam/Desktop/Ömer/index/Marketplace-MVC/wwwroot/images/user/PremiumUser.jpg",
+      "PackagePath": "staticwebassets/images/user/PremiumUser.jpg"
+    },
+    {
       "Id": "/Users/omerislam/Desktop/Ömer/index/Marketplace-MVC/wwwroot/js/site.js",
       "PackagePath": "staticwebassets/js/site.js"
     },

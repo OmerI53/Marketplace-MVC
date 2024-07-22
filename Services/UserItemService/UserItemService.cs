@@ -1,5 +1,5 @@
 using System.Globalization;
-using Microsoft.Data.SqlClient;
+using MySql.Data.MySqlClient;
 using TestMVC.Models.Entity;
 using TestMVC.Models.Request;
 using TestMVC.Repository;
@@ -65,6 +65,30 @@ public class UserItemService : IUserItemService
         return true;
     }
 
+    public bool ChangeQuantity(long itemId, string? userId, int change)
+    {
+        var userItem = _repository.FindAsync(x => x.ItemId == itemId && x.SellerId == userId).Result.FirstOrDefault();
+
+        if (userItem == null)
+        {
+            return false;
+        }
+
+        userItem.Quantity += change;
+
+        switch (userItem.Quantity)
+        {
+            case < 0:
+                throw new Exception("Quantity cannot be negative");
+            case 0:
+                _repository.Delete(userItem);
+                return true;
+            default:
+                _repository.Update(userItem);
+                return true;
+        }
+    }
+
     public bool DeleteUserItem(long itemId, string? userId)
     {
         var userItem = _repository.FindAsync(x => x.ItemId == itemId && x.SellerId == userId).Result.FirstOrDefault();
@@ -79,12 +103,13 @@ public class UserItemService : IUserItemService
 
     public int GetQuantity(long itemId, string sellerId)
     {
-        const string sql = "SELECT FROM UserItems WHERE ItemId = @itemId AND SellerId = @sellerId";
-        var parameters = new[]
-        {
-            new SqlParameter("@itemId", itemId),
-            new SqlParameter("@sellerId", sellerId),
-        };
-        return _repository.ExecuteRawSql(sql, parameters).FirstOrDefault().Quantity;
+        const string sql = "SELECT * FROM UserItems WHERE ItemId = @itemId AND SellerId = @sellerId";
+
+        object[] parameters =
+        [
+            new MySqlParameter("@itemId", itemId),
+            new MySqlParameter("@sellerId", sellerId)
+        ];
+        return _repository.ExecuteRawSql(sql, parameters).FirstOrDefault()!.Quantity;
     }
 }

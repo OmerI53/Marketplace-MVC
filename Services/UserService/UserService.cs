@@ -1,6 +1,4 @@
-using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using TestMVC.Models;
 using TestMVC.Models.Entity;
 using TestMVC.Repository;
 
@@ -27,6 +25,7 @@ public class UserService : IUserService
         //TODO: Ask if there is a better way to do this
         var users = set.Include(u => u.UserItems)
             .ThenInclude(ui => ui.Item)
+            .Where(u => u.Id == id)
             .Select(u => new User
             {
                 Id = u.Id,
@@ -46,8 +45,13 @@ public class UserService : IUserService
                         Category = ui.Item.Category
                     }
                 }).ToList()
-            }).FirstOrDefault(u => u.Id == id);
+            }).FirstOrDefault();
         return users;
+    }
+    
+    public User? GetBaseUserById(string? userId)
+    {
+        return _repository.GetById(userId);
     }
 
     public User? GetUserByName(string name)

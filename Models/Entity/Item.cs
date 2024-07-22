@@ -1,9 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using TestMVC.Models.Entity;
 using TestMVC.Models.Enum;
 
-namespace TestMVC.Models;
+namespace TestMVC.Models.Entity;
 
 [Table("Item")]
 public class Item
@@ -18,8 +17,10 @@ public class Item
 
     [StringLength(300, ErrorMessage = "Data length can't be more than 300 characters.")]
     public string? Description { get; set; }
-    
-    public ICollection<UserItem>? UserItems { get; set; }
 
     public bool InStock { get; set; }
+    public ICollection<UserItem>? UserItems { get; set; }
+
+    // ReSharper disable once CollectionNeverUpdated.Global
+    public ICollection<PurchasedItem>? PurchasedItems { get; set; }
 }

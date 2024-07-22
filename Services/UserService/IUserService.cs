@@ -7,6 +7,7 @@ public interface IUserService
 {
     List<User> GetAllUsers();
     User? GetUserById(string? id);
+    User? GetBaseUserById(string? userId);
     User? GetUserByName(string name);
     Task<User?> GetUserByData(string data);
 }
