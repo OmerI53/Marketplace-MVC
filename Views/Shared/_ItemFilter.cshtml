@@ -1,16 +1,41 @@
-<form class="filter-form filter" method="get">
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using TestMVC.Models.Enum
+
+@{
+    var currentSearchQuery = ViewBag.SearchQuery as string;
+    var currentCategory = ViewBag.Category as string;
+    var currentInStock = ViewBag.InStock as bool? ?? false;
+}
+
+<form class="filter-form filter" method="get" asp-controller="Home" asp-action="Index">
+    <div class="form-group">
+        <label for="searchQuery">Search</label>
+        <input type="text" id="searchQuery" name="searchQuery" class="form-control" placeholder="Item name..." value="@currentSearchQuery"/>
+    </div>
     <div class="form-group">
         <label for="category">Category</label>
-        <select id="category" name="Category" class="form-control">
+        <select id="category" name="category" class="form-control">
             <option value="">All</option>
+            @foreach (var category in Enum.GetValues(typeof(Category)))
+            {
+                if (category.ToString()!.Equals(currentCategory, StringComparison.OrdinalIgnoreCase))
+                {
+                    <option value="@category" selected>@category</option>
+                }
+                else
+                {
+                    <option value="@category">@category</option>
+                }
+            }
         </select>
     </div>
     <div class="form-check">
-        <input type="checkbox" class="form-check-input" id="inStock" name="InStock" value="true">
+        <input type="checkbox" class="form-check-input" id="inStock" name="inStock" value="true" @(currentInStock ? "checked" : "")>
         <label class="form-check-label" for="inStock">In Stock Only</label>
     </div>
     <button type="submit" class="btn btn-primary">Filter</button>
 </form>
+
 
 <style>
 

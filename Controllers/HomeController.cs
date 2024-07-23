@@ -1,8 +1,8 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TestMVC.Models;
 using TestMVC.Models.Entity;
+using TestMVC.Models.Enum;
 using TestMVC.Models.Request;
 using TestMVC.Services.ItemService;
 
@@ -11,24 +11,30 @@ namespace TestMVC.Controllers;
 [Authorize]
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
     private readonly IItemService _itemService;
 
-    public HomeController(ILogger<HomeController> logger, IItemService itemService)
+    public HomeController(IItemService itemService)
     {
-        _logger = logger;
         _itemService = itemService;
     }
 
-    public async Task<IActionResult> Index(string? searchQuery, int page = 1, int pageSize = 10)
+    public async Task<IActionResult> Index(string? searchQuery, Category? category, bool inStock, int page = 1,
+        int pageSize = 10)
     {
+        ViewBag.SearchQuery = searchQuery!;
+        ViewBag.Category = category?.ToString()!;
+        ViewBag.InStock = inStock;
+        
         var itemsQuery = await _itemService.GetItemsAlike(searchQuery);
         if (itemsQuery == null)
         {
             return View(new List<Item>());
         }
 
-        var enumerable = itemsQuery.ToList();
+        var query = itemsQuery.ToList();
+        var filtered = _itemService.ApplyFilters(query, category, inStock);
+
+        var enumerable = filtered.ToList();
         var paginatedItems = enumerable
             .Skip((page - 1) * pageSize)
             .Take(pageSize)

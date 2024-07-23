@@ -1,6 +1,5 @@
 using Bogus;
 using Microsoft.EntityFrameworkCore;
-using TestMVC.Models;
 using TestMVC.Models.Entity;
 using TestMVC.Models.Enum;
 using TestMVC.Repository;
@@ -52,12 +51,10 @@ public class ItemService(IGenericRepository<Item> repository) : IItemService
 
         var context = repository.GetContext();
         var itemsAlike = items!.ToList();
-        foreach (var i in itemsAlike)
+
+        foreach (var i in itemsAlike.Where(i => context.UserItems.Any(ui => ui.ItemId == i.Id)))
         {
-            if (context.UserItems.Any(ui => ui.ItemId == i.Id))
-            {
-                i.InStock = true;
-            }
+            i.InStock = true;
         }
 
         return itemsAlike;
@@ -99,6 +96,21 @@ public class ItemService(IGenericRepository<Item> repository) : IItemService
 
         var c = Enum.Parse(typeof(Category), category);
         return await repository.FindAsync(x => x.Category.Equals(c));
+    }
+
+    public IEnumerable<Item> ApplyFilters(IEnumerable<Item> itemsQuery, Category? category, bool inStock)
+    {
+        if (category != null)
+        {
+            itemsQuery = itemsQuery.Where(i => i.Category.Equals(category)).ToList();
+        }
+
+        if (inStock)
+        {
+            itemsQuery = itemsQuery.Where(i => i.InStock).ToList();
+        }
+
+        return itemsQuery;
     }
 
     #region Generate Random Data
