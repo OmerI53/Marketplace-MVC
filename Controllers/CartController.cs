@@ -81,6 +81,7 @@ public class CartController : Controller
         HttpContext.Response.Cookies.Append(CartCookieKey, JsonConvert.SerializeObject(cart), GetCookieOptions());
         ManageCartCount(-item!.Quantity);
 
+        TempData["InfoMessage"] = "Item removed from cart";
         return RedirectToAction("Index");
     }
 

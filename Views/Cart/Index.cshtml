@@ -1,61 +1,54 @@
 @model ICollection<CartItem>
 
 @{
-    ViewData["Title"] = "Cart";
+ViewData["Title"] = "Cart";
 }
 
 <div class="container">
-    @if (TempData["ErrorMessage"] != null)
-    {
-        <div class="alert alert-danger alert-dismissible fade show overlay-alert" role="alert">
-            @TempData["ErrorMessage"]
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    }
+    @await Html.PartialAsync("_ErrorPopup")
+    @await Html.PartialAsync("_InfoPopup")
     <div class="cart-layout">
         <div class="cart-items">
             @if (!Model.Any())
             {
-                <p>Your cart is empty.</p>
+            <p>Your cart is empty.</p>
             }
             else
             {
-                <div class="scrollable-table">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>Product</th>
-                            <th>Quantity</th>
-                            <th>Price</th>
-                            <th>Total</th>
-                            <th>Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>@item.ItemName</td>
-                                <td>@item.Quantity</td>
-                                <td>@item.Price.ToString("C")</td>
-                                <td>@((item.Quantity * item.Price).ToString("C"))</td>
-                                <td>
-                                    @using (Html.BeginForm("RemoveFromCart", "Cart", FormMethod.Post))
-                                    {
-                                        <input type="hidden" name="itemId" value="@item.ItemId"/>
-                                        <input type="hidden" name="userId" value="@item.SellerId"/>
-                                        <button type="submit" class="btn btn-danger" style="font-size: 12px">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    }
-                                </td>
-                            </tr>
-                        }
-                        </tbody>
-                    </table>
-                </div>
+            <div class="scrollable-table">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>@item.ItemName</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.Price.ToString("C")</td>
+                        <td>@((item.Quantity * item.Price).ToString("C"))</td>
+                        <td>
+                            @using (Html.BeginForm("RemoveFromCart", "Cart", FormMethod.Post))
+                            {
+                            <input type="hidden" name="itemId" value="@item.ItemId"/>
+                            <input type="hidden" name="userId" value="@item.SellerId"/>
+                            <button type="submit" class="btn btn-danger" style="font-size: 12px">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            }
+                        </td>
+                    </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
             }
         </div>
         <div style="width: 50px"></div>
@@ -69,12 +62,12 @@
 
                 @using (Html.BeginForm("ClearCart", "Cart", FormMethod.Post))
                 {
-                    <button type="submit" class="btn clear-cart btn-common-size">Clear Cart</button>
+                <button type="submit" class="btn clear-cart btn-common-size">Clear Cart</button>
                 }
                 <div style="height: 10px"></div>
                 @using (Html.BeginForm("Purchase", "Cart", FormMethod.Post))
                 {
-                    <button type="submit" class="btn purchase btn-common-size">Purchase</button>
+                <button type="submit" class="btn purchase btn-common-size">Purchase</button>
                 }
             </div>
         </div>
@@ -105,7 +98,7 @@
         opacity: 65%;
         border: solid 3px grey;
     }
-    
+
     .button-holder {
         display: flex;
         flex-direction: row; /* Align items horizontally */
@@ -118,17 +111,7 @@
         background-color: red;
         color: white;
     }
-
-    .overlay-alert {
-        position: fixed;
-        top: 20px; /* Adjust as needed */
-        left: 50%;
-        transform: translateX(-50%);
-        width: auto; /* Adjust as needed */
-        z-index: 1050; /* Ensure it's above other elements */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional for a subtle shadow */
-    }
-
+    
     .clear-cart {
         background-color: #f2f2f2;
         color: #333333;
