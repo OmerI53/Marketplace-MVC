@@ -82,12 +82,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19FcnJvclBvcHVwLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/omerislam/Desktop/Ömer/index/Marketplace-MVC/Views/Shared/_InfoPopup.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19JbmZvUG9wdXAuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/omerislam/Desktop/Ömer/index/Marketplace-MVC/Views/Shared/_ItemFilter.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19JdGVtRmlsdGVyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/omerislam/Desktop/Ömer/index/Marketplace-MVC/Views/Shared/_LoginPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19Mb2dpblBhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/omerislam/Desktop/Ömer/index/Marketplace-MVC/Views/Shared/_NavBarPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19OYXZCYXJQYXJ0aWFsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/omerislam/Desktop/Ömer/index/Marketplace-MVC/Views/Shared/_PurchaseHistory.cshtml]

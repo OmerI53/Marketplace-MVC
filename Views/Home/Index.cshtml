@@ -1,9 +1,9 @@
 ﻿@model ICollection<TestMVC.Models.Entity.Item>
 
 @{
-ViewData["Title"] = "Home Page";
-int totalPages = ViewBag.TotalPages;
-int currentPage = ViewBag.CurrentPage;
+    ViewData["Title"] = "Home Page";
+    int totalPages = ViewBag.TotalPages;
+    int currentPage = ViewBag.CurrentPage;
 }
 
 
@@ -13,29 +13,29 @@ int currentPage = ViewBag.CurrentPage;
         <div class="row">
             @foreach (var item in Model.Take(12))
             {
-            <div class="col-md-4 mb-4">
-                <div class="card card-depth">
-                    <div class="card-body">
-                        <h5 class="card-title">@item.ItemName</h5>
-                        <p class="card-text">@item.Description</p>
-                        <p class="card-text">
-                            <strong>Category:</strong> @item.Category.ToString()
-                        </p>
-                        @if (item.InStock)
-                        {
-                        <a asp-controller="Item" asp-action="Details" asp-route-id="@item.Id" class="float-right">
-                            <i class="fas fa-search"></i>
-                        </a>
-                        }
-                        else
-                        {
-                        <span class="float-right text-muted">
+                <div class="col-md-4 mb-4">
+                    <div class="card card-depth">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.ItemName</h5>
+                            <p class="card-text">@item.Description</p>
+                            <p class="card-text">
+                                <strong>Category:</strong> @item.Category.ToString()
+                            </p>
+                            @if (item.InStock)
+                            {
+                                <a asp-controller="Item" asp-action="Details" asp-route-id="@item.Id" class="float-right">
+                                    <i class="fas fa-search"></i>
+                                </a>
+                            }
+                            else
+                            {
+                                <span class="float-right text-muted">
                                     <i class="fas fa-search"></i>
                                 </span>
-                        }
+                            }
+                        </div>
                     </div>
                 </div>
-            </div>
             }
         </div>
     </div>
@@ -49,9 +49,9 @@ int currentPage = ViewBag.CurrentPage;
         <ul class="pagination">
             @for (var i = 1; i <= totalPages; i++)
             {
-            <li class="page-item @(i == currentPage ? "active" : "")">
-                <a class="page-link" href="?page=@i">@i</a>
-            </li>
+                <li class="page-item @(i == currentPage ? "active" : "")">
+                    <a class="page-link" href="?page=@i">@i</a>
+                </li>
             }
         </ul>
     </nav>

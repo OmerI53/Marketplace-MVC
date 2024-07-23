@@ -4,10 +4,21 @@
 
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
-
 @{
     var searchQuery = ViewData["SearchQuery"]?.ToString();
 }
+
+<script>
+    function getCookie(name) {
+        let value = "; " + document.cookie;
+        let parts = value.split("; " + name + "=");
+        if (parts.length == 2) return parts.pop().split(";").shift();
+    }
+    document.addEventListener("DOMContentLoaded", function() {
+        let cartCount = getCookie("CartCount") || "0";
+        document.getElementById("cart-count").innerText = cartCount;
+    });
+</script>
 
 <ul class="navbar-nav w-100">
     @if (SignInManager.IsSignedIn(User))
@@ -48,6 +59,7 @@
             <li class="nav-item justify-content-center">
                 <a id="shopping-cart" class="btn btn-toolbar" asp-action="Index" asp-controller="Cart">
                     <i class="fas fa-shopping-cart layout-icon"></i>
+                    <span id="cart-count" class="badge badge-pill badge-danger"></span>
                 </a>
             </li>
         </div>

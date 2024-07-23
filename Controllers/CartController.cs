@@ -61,9 +61,10 @@ public class CartController : Controller
             cart.Add(item);
         }
 
-        var cookieOptions = new CookieOptions { Expires = DateTime.Now.AddMinutes(30) };
-        HttpContext.Response.Cookies.Append(CartCookieKey, JsonConvert.SerializeObject(cart), cookieOptions);
-        return RedirectToAction("Details", "Item");
+        HttpContext.Response.Cookies.Append(CartCookieKey, JsonConvert.SerializeObject(cart), GetCookieOptions());
+        ManageCartCount(1);
+        TempData["InfoMessage"] = "Item added to cart";
+        return Json(new { success = true });
     }
 
     [HttpPost]
@@ -77,8 +78,9 @@ public class CartController : Controller
         }
 
         HttpContext.Response.Cookies.Delete(CartCookieKey);
-        var cookieOptions = new CookieOptions { Expires = DateTime.Now.AddMinutes(30) };
-        HttpContext.Response.Cookies.Append(CartCookieKey, JsonConvert.SerializeObject(cart), cookieOptions);
+        HttpContext.Response.Cookies.Append(CartCookieKey, JsonConvert.SerializeObject(cart), GetCookieOptions());
+        ManageCartCount(-item!.Quantity);
+
         return RedirectToAction("Index");
     }
 
@@ -86,6 +88,7 @@ public class CartController : Controller
     public IActionResult ClearCart()
     {
         HttpContext.Response.Cookies.Delete(CartCookieKey);
+        HttpContext.Response.Cookies.Delete("CartCount");
         return RedirectToAction("Index");
     }
 
@@ -117,9 +120,30 @@ public class CartController : Controller
     {
         var cookie = context.Request.Cookies[CartCookieKey];
         if (cookie is not (null or "[null]")) return JsonConvert.DeserializeObject<List<CartItem>>(cookie)!;
-        
+
         context.Response.Cookies.Delete(CartCookieKey);
         context.Response.Cookies.Append(CartCookieKey, "[]");
         return [];
+    }
+
+    private void ManageCartCount(int itemQuantity)
+    {
+        var count = HttpContext.Request.Cookies["CartCount"];
+
+        if (count != null)
+        {
+            HttpContext.Response.Cookies.Delete("CartCount");
+            HttpContext.Response.Cookies.Append("CartCount", (int.Parse(count) + itemQuantity).ToString(),
+                GetCookieOptions());
+        }
+        else
+        {
+            HttpContext.Response.Cookies.Append("CartCount", "0", GetCookieOptions());
+        }
+    }
+
+    private static CookieOptions GetCookieOptions()
+    {
+        return new CookieOptions { Expires = DateTime.Now.AddMinutes(30) };
     }
 }

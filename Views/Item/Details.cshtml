@@ -6,9 +6,9 @@
         fetch(`/Cart/AddToCart`, {method: 'POST',body: JSON.stringify(item),headers: {'Content-Type': 'application/json'}})
             .then(response => {
                 if (response.ok) {
-                    alert("Item added to cart!");
+                    window.location.reload();
                 }
-                return response.json();
+                throw new Error('Network response was not ok.');
             });
     }
     
@@ -21,6 +21,7 @@
 </script>
 
 @await Html.PartialAsync("_ErrorPopup")
+@(await Html.PartialAsync("_InfoPopup"))
 <div class="container text-center">
     <div class="header-row">
         <a asp-action="Index" asp-controller="Home" class="flex-row btn btn-primary back-button">
