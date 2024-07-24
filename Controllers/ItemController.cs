@@ -25,13 +25,10 @@ public class ItemController(IItemService itemService) : Controller
     public async Task<IActionResult> Details([FromRoute] long id)
     {
         var item = await itemService.GetItemById(id);
-        if (item == null)
-        {
-            TempData["ErrorMessage"] = "Item not found.";
-            return RedirectToAction("Index","Home");
-        }
+        if (item != null) return View(item);
+        TempData["ErrorMessage"] = "Item not found.";
+        return RedirectToAction("Index","Home");
 
-        return View(item);
     }
 
     [HttpGet]

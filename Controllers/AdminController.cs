@@ -14,6 +14,7 @@ public class AdminController : Controller
     private readonly IItemService _itemService;
     private readonly UserManager<User> _userManager;
 
+    /// <inheritdoc />
     public AdminController(IItemService itemService, UserManager<User> userManager)
     {
         _itemService = itemService;

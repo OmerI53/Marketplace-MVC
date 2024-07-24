@@ -133,13 +133,15 @@ public class CartController : Controller
 
         if (count != null)
         {
+            var newCount = Math.Max(int.Parse(count) + itemQuantity, 0);
+            
             HttpContext.Response.Cookies.Delete("CartCount");
-            HttpContext.Response.Cookies.Append("CartCount", (int.Parse(count) + itemQuantity).ToString(),
+            HttpContext.Response.Cookies.Append("CartCount", newCount.ToString(),
                 GetCookieOptions());
         }
         else
         {
-            HttpContext.Response.Cookies.Append("CartCount", "0", GetCookieOptions());
+            HttpContext.Response.Cookies.Append("CartCount", itemQuantity.ToString(), GetCookieOptions());
         }
     }
 

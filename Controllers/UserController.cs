@@ -14,6 +14,7 @@ public class UserController : Controller
     private readonly IItemService _itemService;
     private readonly IPurchaseService _purchaseService;
 
+    /// <inheritdoc />
     public UserController(IUserService userService, IItemService itemService, IPurchaseService purchaseService)
     {
         _userService = userService;

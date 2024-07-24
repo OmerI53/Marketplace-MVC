@@ -13,6 +13,7 @@ public class HomeController : Controller
 {
     private readonly IItemService _itemService;
 
+    /// <inheritdoc />
     public HomeController(IItemService itemService)
     {
         _itemService = itemService;

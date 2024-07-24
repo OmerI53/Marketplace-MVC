@@ -25,11 +25,33 @@ public class UserItemController : Controller
         var success = _service.CreateUserItem(request, userId);
         if (!success)
         {
-            TempData["ErrorMessage"] = "Item is already in collection,\nincrease/decrease quantity from the menu.";
+            TempData["ErrorMessage"] = "Item is already in collection\n.";
         }
 
         return RedirectToAction("Index", "User");
     }
+
+    [Route("Edit")]
+    [HttpGet]
+    public IActionResult Edit([FromQuery] string itemId, [FromQuery] string sellerId)
+    {
+        var item = _service.GetByIdF(long.Parse(itemId), sellerId);
+        if (item == null)
+        {
+            return NotFound();
+        }
+
+        return PartialView("_EditItem", item);
+    }
+    
+    [Route("Save")]
+    [HttpPost]
+    public IActionResult Save(UpdateUserItem request)
+    {
+        _service.UpdateUserItem(request);
+        return RedirectToAction("Index", "User");
+    }
+
 
     [Route("ChangeQuantity")]
     [HttpPost]
@@ -45,17 +67,17 @@ public class UserItemController : Controller
         return Ok();
     }
 
-    [Route("{itemId:long}")]
-    [HttpDelete]
-    public IActionResult DeleteUserItem([FromRoute] long itemId)
+    [Route("DeleteUserItem")]
+    [HttpPost]
+    public IActionResult DeleteUserItem(DeleteUserItem request)
     {
-        var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-        var result = _service.DeleteUserItem(itemId, userId);
+        //var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        var result = _service.DeleteUserItem(long.Parse(request.ItemId), request.SellerId);
         if (result == false)
         {
             return NotFound();
         }
 
-        return Ok();
+        return RedirectToAction("Index", "User");
     }
 }

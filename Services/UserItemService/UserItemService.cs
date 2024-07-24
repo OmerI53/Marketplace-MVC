@@ -1,4 +1,5 @@
 using System.Globalization;
+using Microsoft.EntityFrameworkCore;
 using MySql.Data.MySqlClient;
 using TestMVC.Models.Entity;
 using TestMVC.Models.Request;
@@ -101,7 +102,7 @@ public class UserItemService : IUserItemService
         return true;
     }
 
-    public int GetQuantity(long itemId, string sellerId)
+    public UserItem? GetUserItemById(long itemId, string sellerId)
     {
         const string sql = "SELECT * FROM UserItems WHERE ItemId = @itemId AND SellerId = @sellerId";
 
@@ -110,6 +111,60 @@ public class UserItemService : IUserItemService
             new MySqlParameter("@itemId", itemId),
             new MySqlParameter("@sellerId", sellerId)
         ];
-        return _repository.ExecuteRawSql(sql, parameters).FirstOrDefault()!.Quantity;
+
+        return _repository.ExecuteRawSql(sql, parameters).FirstOrDefault();
+    }
+
+    public UserItem? GetByIdF(long itemId, string sellerId)
+    {
+        var item = _repository.GetSet()
+            .Include(ui => ui.Item)
+            .Include(ui => ui.Seller)
+            .Where(ui => ui.ItemId == itemId && ui.SellerId == sellerId)
+            .Select(ui => new UserItem
+            {
+                ItemId = ui.ItemId,
+                Item = new Item
+                {
+                    ItemName = ui.Item!.ItemName
+                },
+                Seller = new User
+                {
+                    UserName = ui.Seller!.UserName
+                },
+                SellerId = ui.SellerId,
+                Quantity = ui.Quantity,
+                Price = ui.Price
+            }).FirstOrDefault();
+
+        return item;
+    }
+
+    public int GetQuantity(long itemId, string sellerId)
+    {
+        var result = GetUserItemById(itemId, sellerId);
+        if (result == null)
+        {
+            return -1;
+        }
+
+        return result.Quantity;
+    }
+
+    public void UpdateUserItem(UpdateUserItem item)
+    {
+        var userItem = GetUserItemById(long.Parse(item.ItemId), item.SellerId);
+        if (userItem == null) return;
+        if (item.Quantity != null)
+        {
+            userItem.Quantity = int.Parse(item.Quantity);
+        }
+
+        if (item.Price != null)
+        {
+            userItem.Price = float.Parse(item.Price, CultureInfo.InvariantCulture);
+        }
+
+        _repository.Update(userItem);
     }
 }

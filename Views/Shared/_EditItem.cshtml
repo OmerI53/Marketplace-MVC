@@ -1,0 +1,33 @@
+@model TestMVC.Models.Entity.UserItem
+
+<form asp-action="Save" asp-controller="UserItem" method="post">
+    <div class="form-group">
+        <h2>@Model.Item!.ItemName</h2>
+        <input type="hidden" asp-for="ItemId" value="@Model.ItemId"/>
+        <input type="hidden" asp-for="SellerId" value="@Model.SellerId"/>
+        <div class="mt-4">
+            <label>Price</label>
+            <input type="number" class="form-control" placeholder="@Model.Price" asp-for="Price"/>
+        </div>
+        <div class="mt-4">
+            <label>Quantity</label>
+            <input type="number" class="form-control" placeholder="@Model.Quantity" asp-for="Quantity"/>
+        </div>
+        <button class="btn btn-primary mt-4" type="submit">
+            Save Changes
+        </button>
+    </div>
+</form>
+<form asp-controller="UserItem" asp-action="DeleteUserItem" method="post">
+    <input type="hidden" asp-for="ItemId" value="@Model.ItemId"/>
+    <input type="hidden" asp-for="SellerId" value="@Model.SellerId"/>
+    <button class="btn btn-danger mt-4" type="submit">
+        Delete Item
+    </button>
+</form>
+
+<style>
+    label {
+        font-size: 20px;
+    }
+</style>
