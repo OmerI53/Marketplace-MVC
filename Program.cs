@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using TestMVC.Controllers;
+using TestMVC.Filters;
 using TestMVC.Models.Entity;
 using TestMVC.Repository;
 using TestMVC.Services.CartService;
@@ -13,7 +15,6 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddDbContext<AppDbContext>(options =>
     {
         options.UseMySQL(builder.Configuration.GetConnectionString("MVCConnection") ?? string.Empty);
-        //options.EnableSensitiveDataLogging();
     });
 
     builder.Services.AddDefaultIdentity<User>(options =>
@@ -24,6 +25,12 @@ var builder = WebApplication.CreateBuilder(args);
         .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<AppDbContext>();
     
+    builder.Services.AddControllersWithViews(options =>
+    {
+        options.Filters.Add<ModelFilter>();
+    });
+
+    
     builder.Services.ConfigureApplicationCookie(options =>
     {
         options.Cookie.HttpOnly = true;
@@ -33,7 +40,6 @@ var builder = WebApplication.CreateBuilder(args);
         options.SlidingExpiration = true;
     });
 
-    builder.Services.AddControllersWithViews();
     builder.Services.AddRazorPages();
     builder.Services.AddEndpointsApiExplorer();
 
@@ -42,7 +48,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<IUserService, UserService>();
     builder.Services.AddScoped<IUserItemService, UserItemService>();
     builder.Services.AddScoped<ICartService, CartService>();
-    builder.Services.AddScoped<IPurchaseService,PurchaseService>();
+    builder.Services.AddScoped<IPurchaseService, PurchaseService>();
 }
 
 var app = builder.Build();

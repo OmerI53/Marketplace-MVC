@@ -74,12 +74,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/omerislam/Desktop/Ömer/index/Marketplace-MVC/Views/Shared/_CreateItem.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19DcmVhdGVJdGVtLmNzaHRtbA==
+[/Users/omerislam/Desktop/Ömer/index/Marketplace-MVC/Views/Shared/Item/_CreateItem.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0l0ZW0vX0NyZWF0ZUl0ZW0uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/omerislam/Desktop/Ömer/index/Marketplace-MVC/Views/Shared/_EditItem.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19FZGl0SXRlbS5jc2h0bWw=
+[/Users/omerislam/Desktop/Ömer/index/Marketplace-MVC/Views/Shared/Item/_EditItem.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0l0ZW0vX0VkaXRJdGVtLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/omerislam/Desktop/Ömer/index/Marketplace-MVC/Views/Shared/Item/_SellItem.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0l0ZW0vX1NlbGxJdGVtLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/omerislam/Desktop/Ömer/index/Marketplace-MVC/Views/Shared/_ErrorPopup.cshtml]
@@ -104,10 +108,6 @@ build_metadata.AdditionalFiles.CssScope =
 
 [/Users/omerislam/Desktop/Ömer/index/Marketplace-MVC/Views/Shared/_PurchaseHistory.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19QdXJjaGFzZUhpc3RvcnkuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[/Users/omerislam/Desktop/Ömer/index/Marketplace-MVC/Views/Shared/_SellItem.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19TZWxsSXRlbS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/omerislam/Desktop/Ömer/index/Marketplace-MVC/Views/Shared/_UserList.cshtml]

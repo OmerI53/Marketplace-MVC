@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TestMVC.Filters;
 using TestMVC.Models.Request;
 using TestMVC.Services.UserItemService;
 
@@ -19,6 +20,7 @@ public class UserItemController : Controller
 
     [Route("Create")]
     [HttpPost]
+    [ModelFilter]
     public IActionResult Create(CreateUserItemModel request)
     {
         var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
@@ -43,9 +45,10 @@ public class UserItemController : Controller
 
         return PartialView("_EditItem", item);
     }
-    
+
     [Route("Save")]
     [HttpPost]
+    [ModelFilter]
     public IActionResult Save(UpdateUserItem request)
     {
         _service.UpdateUserItem(request);

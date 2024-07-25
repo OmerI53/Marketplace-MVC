@@ -14,7 +14,8 @@
         let parts = value.split("; " + name + "=");
         if (parts.length == 2) return parts.pop().split(";").shift();
     }
-    document.addEventListener("DOMContentLoaded", function() {
+
+    document.addEventListener("DOMContentLoaded", function () {
         let cartCount = getCookie("CartCount") || "0";
         document.getElementById("cart-count").innerText = cartCount;
     });
@@ -29,6 +30,7 @@
                 <a id="manage" class="nav-link text-dark bar-text" asp-controller="Admin" asp-action="Index">Admin Panel</a>
             </li>
         }
+
         <div class="mx-auto">
             <form asp-action="Index" asp-controller="Home" class="form-inline">
                 <input type="text" name="searchQuery" value="@searchQuery" placeholder="Search..." class="form-control"/>
@@ -99,6 +101,7 @@
         font-weight: bold;
         font-size: 1.2em;
     }
+
     .mx-auto {
         width: 80%;
         display: flex;

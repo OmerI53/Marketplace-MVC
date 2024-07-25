@@ -7,7 +7,7 @@
         <input type="hidden" asp-for="SellerId" value="@Model.SellerId"/>
         <div class="mt-4">
             <label>Price</label>
-            <input type="number" class="form-control" placeholder="@Model.Price" asp-for="Price"/>
+            <input type="text" class="form-control" pattern="^\d+(\.\d{1,2})?$" title="Price must be a decimal number with up to two decimal places." placeholder="@Model.Price" asp-for="Price"/>
         </div>
         <div class="mt-4">
             <label>Quantity</label>
