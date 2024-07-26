@@ -1,4 +1,5 @@
 using Confluent.Kafka;
+using Microsoft.AspNetCore.Mvc;
 using TestMVC.Models.Entity;
 using TestMVC.Models.Request;
 using TestMVC.Repository;
@@ -31,7 +32,8 @@ public class NotificationService : INotificationService
             Message = message.Message,
             Topic = message.Title,
             ReceiverId = user.Id,
-            Receiver = user
+            Receiver = user,
+            IsRead = false
         };
         await _repository.Insert(notification);
     }

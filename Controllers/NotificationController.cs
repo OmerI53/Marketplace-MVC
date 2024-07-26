@@ -9,15 +9,18 @@ public class NotificationController : Controller
 {
     private readonly INotificationService _notificationService;
 
-    public NotificationController( INotificationService notificationService)
+    public NotificationController(INotificationService notificationService)
     {
         _notificationService = notificationService;
     }
 
     [HttpPost("send")]
-    public async Task Send(NotificationRequest request)
+    public async Task<IActionResult> Send(NotificationRequest request)
     {
         await _notificationService.SendNotification(request);
+        var returnUrl = HttpContext.Request.Headers.Referer.ToString();
+        TempData["InfoMessage"] = "Notification sent";
+        return Redirect(returnUrl);
     }
 
     [HttpGet]
