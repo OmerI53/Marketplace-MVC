@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using TestMVC.Models.Entity;
 using TestMVC.Models.Request;
 using TestMVC.Services.NotificationService;
 
@@ -20,8 +21,9 @@ public class NotificationController : Controller
     }
 
     [HttpGet]
-    public void GetNotificationByUserId(string userId)
+    public List<Notification> GetNotificationByUserId(string userId)
     {
         var notifications = _notificationService.GetNotificationByUserId(userId);
+        return notifications.ToList();
     }
 }

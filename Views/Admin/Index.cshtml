@@ -2,6 +2,7 @@
     <title>Admin Panel</title>
 </head>
 <body>
+@await Html.PartialAsync("_ErrorPopup")
 <div class="flex-container">
     <div class="justify-content-center">
         @await Html.PartialAsync("_UserList")

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using TestMVC.Models;
+using TestMVC.Filters;
 using TestMVC.Models.Entity;
 using TestMVC.Models.Request;
 using TestMVC.Services.ItemService;
@@ -35,24 +35,17 @@ public class AdminController : Controller
     [HttpPost]
     public async Task<IActionResult> EditUser(EditUserModel model)
     {
-        if (ModelState.IsValid)
+        var user = await _userManager.FindByIdAsync(model.UserId!);
+        if (user == null) return Json(new { success = false, message = "Invalid data" });
+        user.UserName = model.UserName;
+        var role = await _userManager.GetRolesAsync(user);
+        if (role.Count > 0)
         {
-            var user = await _userManager.FindByIdAsync(model.UserId!);
-            if (user != null)
-            {
-                user.UserName = model.UserName;
-                var role = await _userManager.GetRolesAsync(user);
-                if (role.Count > 0)
-                {
-                    await _userManager.RemoveFromRoleAsync(user, role[0]);
-                    await _userManager.AddToRoleAsync(user, model.UserRole!);
-                }
-
-                await _userManager.UpdateAsync(user);
-                return Json(new { success = true });
-            }
+            await _userManager.RemoveFromRoleAsync(user, role[0]);
+            await _userManager.AddToRoleAsync(user, model.UserRole!);
         }
 
-        return Json(new { success = false, message = "Invalid data" });
+        await _userManager.UpdateAsync(user);
+        return Json(new { success = true });
     }
 }

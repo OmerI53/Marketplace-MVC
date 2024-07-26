@@ -24,8 +24,11 @@ var builder = WebApplication.CreateBuilder(args);
         })
         .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<AppDbContext>();
-
-    builder.Services.AddControllersWithViews(options => { options.Filters.Add<ModelFilter>(); });
+    builder.Services.AddControllersWithViews(options =>
+    {
+        options.Filters.Add<ModelFilter>();
+        options.Filters.Add(typeof(ExceptionFilter));
+    });
 
 
     builder.Services.ConfigureApplicationCookie(options =>

@@ -63,4 +63,9 @@ public class UserService : IUserService
     {
         throw new NotImplementedException();
     }
+
+    public User? GetUserByUsername(string? username)
+    {
+        return _repository.FindAsync(user=>user.Name==username).Result.FirstOrDefault();
+    }
 }

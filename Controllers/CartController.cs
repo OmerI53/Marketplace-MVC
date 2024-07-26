@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using TestMVC.Filters;
 using TestMVC.Models;
 using TestMVC.Models.Request;
 using TestMVC.Services.CartService;
@@ -107,14 +108,13 @@ public class CartController : Controller
             }
 
             await _cartService.Purchase(cart, user);
-            return ClearCart();
         }
         catch (Exception e)
         {
-            TempData["ErrorMessage"] = e.Message;
+            return RedirectToAction("Index");
         }
 
-        return RedirectToAction("Index");
+        return ClearCart();
     }
 
     private static List<CartItem> GetCart(HttpContext context)
@@ -134,7 +134,7 @@ public class CartController : Controller
         if (count != null)
         {
             var newCount = Math.Max(int.Parse(count) + itemQuantity, 0);
-            
+
             HttpContext.Response.Cookies.Delete("CartCount");
             HttpContext.Response.Cookies.Append("CartCount", newCount.ToString(),
                 GetCookieOptions());

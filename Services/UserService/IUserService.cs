@@ -10,4 +10,5 @@ public interface IUserService
     User? GetBaseUserById(string? userId);
     User? GetUserByName(string name);
     Task<User?> GetUserByData(string data);
+    User? GetUserByUsername(string? username);
 }
