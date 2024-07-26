@@ -6,24 +6,24 @@
 <script>
     function openEditModal(itemId, sellerId) {
         fetch(`/UserItem/Edit?itemId=${itemId}&sellerId=${sellerId}`)
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('editBody').innerHTML = data;
-            $('#EditItemModal').modal('show');
-        });
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('editBody').innerHTML = data;
+                $('#EditItemModal').modal('show');
+            });
     }
 </script>
 
 @{
-    var userId = UserManager.GetUserId(User);
-    var userEntity = await UserManager.FindByIdAsync(userId!);
-    if (userEntity == null)
-    {
-        TempData["ErrorMessage"] = "User not found";
-        return;
-    }
+var userId = UserManager.GetUserId(User);
+var userEntity = await UserManager.FindByIdAsync(userId!);
+if (userEntity == null)
+{
+TempData["ErrorMessage"] = "User not found";
+return;
+}
 
-    var role = UserManager.GetRolesAsync(userEntity).Result.FirstOrDefault();
+var role = UserManager.GetRolesAsync(userEntity).Result.FirstOrDefault();
 }
 
 
@@ -35,47 +35,47 @@
         <h1>@Model.Name</h1>
         @if (!string.Equals(role, "BasicUser", StringComparison.OrdinalIgnoreCase))
         {
-            <button type="button" class="btn profile-btn" data-toggle="modal" data-target="#SellItemModal">
-                Sell Items
-            </button>
+        <button type="button" class="btn profile-btn" data-toggle="modal" data-target="#SellItemModal">
+            Sell Items
+        </button>
         }
     </div>
 
     <div class="user-items">
         @if (!string.Equals(role, "BasicUser", StringComparison.OrdinalIgnoreCase))
         {
+        <table class="table">
+            <h1 style="color:white;">Collection</h1>
+            <thead>
+            <tr>
+                <th> Name</th>
+                <th> Category</th>
+                <th> Price</th>
+                <th> Quantity</th>
+                <th> Edit</th>
+            </tr>
+            </thead>
+        </table>
+        <div class="item-table">
             <table class="table">
-                <h1 style="color:white;">Collection</h1>
-                <thead>
+                <tbody>
+                @foreach (var item in Model.UserItems)
+                {
                 <tr>
-                    <th> Name</th>
-                    <th> Category</th>
-                    <th> Price</th>
-                    <th> Quantity</th>
-                    <th> Edit</th>
+                    <td> @item.Item!.ItemName </td>
+                    <td> @item.Item.Category </td>
+                    <td> @item.Price </td>
+                    <td> @item.Quantity </td>
+                    <td>
+                        <button class="btn profile-btn" onclick="openEditModal('@item.ItemId','@item.SellerId')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </td>
                 </tr>
-                </thead>
+                }
+                </tbody>
             </table>
-            <div class="item-table">
-                <table class="table">
-                    <tbody>
-                    @foreach (var item in Model.UserItems)
-                    {
-                        <tr>
-                            <td> @item.Item!.ItemName </td>
-                            <td> @item.Item.Category </td>
-                            <td> @item.Price </td>
-                            <td> @item.Quantity </td>
-                            <td>
-                                <button class="btn profile-btn" onclick="openEditModal('@item.ItemId','@item.SellerId')">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    }
-                    </tbody>
-                </table>
-            </div>
+        </div>
         }
         <br/>
         @await Html.PartialAsync("_PurchaseHistory", Model.Purchases)
@@ -138,20 +138,21 @@
         border: solid 3px white;
     }
 
-    .item-table{
+    .item-table {
         max-height: 300px;
         min-height: 300px;
         overflow-y: auto;
         width: 100%;
         height: 100%;
     }
-    .table{
+
+    .table {
         margin: 0;
         padding: 0;
-        border-collapse: collapse; /* Ensures that the border spacing is removed */
-        table-layout: fixed; /* Ensures consistent column widths */
+        border-collapse: collapse; 
+        table-layout: fixed; 
     }
-    
+
     .btn-sm {
         padding: 3px 6px;
         font-size: 10px;

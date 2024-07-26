@@ -17,4 +17,5 @@ public class User : IdentityUser
 
     // ReSharper disable once CollectionNeverUpdated.Global
     public ICollection<PurchasedItem> Purchases { get; set; } = new List<PurchasedItem>();
+    public ICollection<Notification> Notifications { get; set; } = new List<Notification>();
 }

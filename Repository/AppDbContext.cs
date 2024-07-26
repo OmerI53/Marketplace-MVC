@@ -10,6 +10,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
     public DbSet<Item> Items { get; set; }
     public DbSet<UserItem> UserItems { get; set; }
     public DbSet<PurchasedItem> PurchasedItems { get; set; }
+    public DbSet<Notification> Notifications { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -37,5 +38,13 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
             .HasOne(pi => pi.Buyer)
             .WithMany(b => b.Purchases)
             .HasForeignKey(pi => pi.BuyerId);
+
+        modelBuilder.Entity<Notification>()
+            .HasKey(n=>n.Id);
+        
+        modelBuilder.Entity<Notification>()
+            .HasOne(n => n.Receiver)
+            .WithMany(u => u.Notifications)
+            .HasForeignKey(n=>n.ReceiverId);
     }
 }

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MarketplaceMVC")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f911f1b38935075890537198e3ef3da2488de652")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+81e6de69d3eb0252f1140fa8835e5ff2712d3c8a")]
 [assembly: System.Reflection.AssemblyProductAttribute("MarketplaceMVC")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MarketplaceMVC")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

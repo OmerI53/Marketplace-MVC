@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using TestMVC.Controllers;
 using TestMVC.Filters;
 using TestMVC.Models.Entity;
 using TestMVC.Repository;
 using TestMVC.Services.CartService;
 using TestMVC.Services.ItemService;
+using TestMVC.Services.NotificationService;
 using TestMVC.Services.PurchaseService;
 using TestMVC.Services.UserItemService;
 using TestMVC.Services.UserService;
@@ -24,13 +24,10 @@ var builder = WebApplication.CreateBuilder(args);
         })
         .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<AppDbContext>();
-    
-    builder.Services.AddControllersWithViews(options =>
-    {
-        options.Filters.Add<ModelFilter>();
-    });
 
-    
+    builder.Services.AddControllersWithViews(options => { options.Filters.Add<ModelFilter>(); });
+
+
     builder.Services.ConfigureApplicationCookie(options =>
     {
         options.Cookie.HttpOnly = true;
@@ -49,6 +46,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<IUserItemService, UserItemService>();
     builder.Services.AddScoped<ICartService, CartService>();
     builder.Services.AddScoped<IPurchaseService, PurchaseService>();
+    builder.Services.AddScoped<INotificationService, NotificationService>();
 }
 
 var app = builder.Build();

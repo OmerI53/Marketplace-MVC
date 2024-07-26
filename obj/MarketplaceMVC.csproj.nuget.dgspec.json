@@ -47,6 +47,10 @@
               "target": "Package",
               "version": "[35.5.1, )"
             },
+            "Confluent.Kafka": {
+              "target": "Package",
+              "version": "[2.5.0, )"
+            },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
               "version": "[8.0.6, )"

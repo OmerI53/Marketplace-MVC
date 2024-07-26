@@ -1,0 +1,36 @@
+@model TestMVC.Models.Request.NotificationRequest
+
+<div class="notification-container">
+    <form asp-controller="Notification" asp-action="Send" method="post">
+        <div class="form-group">
+            <input asp-for="Title" type="hidden" value="Direct"/>
+            <label class="not-label">Username</label>
+            <input asp-for="Username" type="text" class="form-control" id="userName" name="userName"/>
+
+            <label for="role" class="not-label mt-1">Role</label>
+            <select class="form-control" asp-for="Role" id="role" name="role">
+                <option value="">Select Role</option>
+                <option value="Admin">Admin</option>
+                <option value="BasicUser">Basic User</option>
+                <option value="PremiumUser">Premium User</option>
+            </select>
+
+            <label for="message" class="not-label mt-1">Notification Message</label>
+            <input type="text" class="form-control" asp-for="Message" id="message" name="message" required/>
+        </div>
+        <button type="submit" class="btn btn-primary mt-1">Send Notification</button>
+    </form>
+</div>
+
+<style>
+    .notification-container {
+        background: white;
+        opacity: 65%;
+        padding: 5px;
+        border-radius: 15px;
+    }
+
+    .not-label {
+        color: black;
+    }
+</style>

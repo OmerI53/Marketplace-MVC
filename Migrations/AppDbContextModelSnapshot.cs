@@ -177,6 +177,23 @@ namespace TestMVC.Migrations
                     b.ToTable("Item");
                 });
 
+            modelBuilder.Entity("TestMVC.Models.Entity.Notification", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ReceiverId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReceiverId");
+
+                    b.ToTable("Notifications");
+                });
+
             modelBuilder.Entity("TestMVC.Models.Entity.PurchasedItem", b =>
                 {
                     b.Property<long>("Id")
@@ -185,7 +202,8 @@ namespace TestMVC.Migrations
 
                     b.Property<string>("BuyerId")
                         .IsRequired()
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
 
                     b.Property<long>("ItemId")
                         .HasColumnType("bigint");
@@ -201,7 +219,8 @@ namespace TestMVC.Migrations
 
                     b.Property<string>("SellerId")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
 
                     b.HasKey("Id");
 
@@ -357,6 +376,17 @@ namespace TestMVC.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("TestMVC.Models.Entity.Notification", b =>
+                {
+                    b.HasOne("TestMVC.Models.Entity.User", "Receiver")
+                        .WithMany("Notifications")
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Receiver");
+                });
+
             modelBuilder.Entity("TestMVC.Models.Entity.PurchasedItem", b =>
                 {
                     b.HasOne("TestMVC.Models.Entity.User", "Buyer")
@@ -404,6 +434,8 @@ namespace TestMVC.Migrations
 
             modelBuilder.Entity("TestMVC.Models.Entity.User", b =>
                 {
+                    b.Navigation("Notifications");
+
                     b.Navigation("Purchases");
 
                     b.Navigation("UserItems");

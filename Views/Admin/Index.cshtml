@@ -5,6 +5,7 @@
 <div class="flex-container">
     <div class="justify-content-center">
         @await Html.PartialAsync("_UserList")
+        @await Html.PartialAsync("_NotificationList")
     </div>
     <div class="justify-content-center">
         @await Html.PartialAsync("_CreateItem")
@@ -17,6 +18,8 @@
         display: flex;
         justify-content: space-around; /* Adjust as needed */
     }
+    
+    
 
     h1{
         color: white;
