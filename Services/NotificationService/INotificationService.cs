@@ -7,5 +7,5 @@ namespace TestMVC.Services.NotificationService;
 public interface INotificationService
 {
     Task SendNotification(NotificationRequest message);
-    IEnumerable<Notification> GetNotificationByUserId(string userId);
+    Task<IEnumerable<Notification>> GetNotificationByUserId(string userId);
 }

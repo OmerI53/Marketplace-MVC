@@ -24,9 +24,14 @@ public class NotificationController : Controller
     }
 
     [HttpGet]
-    public List<Notification> GetNotificationByUserId(string userId)
+    public async Task<List<Notification>> GetNotificationByUserId(string userId)
     {
-        var notifications = _notificationService.GetNotificationByUserId(userId);
+        var notifications = await _notificationService.GetNotificationByUserId(userId);
         return notifications.ToList();
+    }
+
+    public IActionResult Details()
+    {
+        throw new NotImplementedException();
     }
 }

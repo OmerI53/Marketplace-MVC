@@ -1,11 +1,24 @@
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using TestMVC.Models.Entity
+@using TestMVC.Services.NotificationService
 
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
+@inject INotificationService NotificationService
 @{
+    var userId = UserManager.GetUserId(User);
+    var userEntity = await UserManager.FindByIdAsync(userId!);
+    if (userEntity == null)
+    {
+        TempData["ErrorMessage"] = "User not found";
+        return;
+    }
+
+    var role = UserManager.GetRolesAsync(userEntity).Result.FirstOrDefault();
     var searchQuery = ViewData["SearchQuery"]?.ToString();
+    var notificationEnum = await NotificationService.GetNotificationByUserId(userId!);
+    var notifications = notificationEnum.ToList();
 }
 
 <script>
@@ -19,12 +32,32 @@
         let cartCount = getCookie("CartCount") || "0";
         document.getElementById("cart-count").innerText = cartCount;
     });
+
+    function toggleDropdown() {
+        document.getElementById("notificationDropdown").classList.toggle("show");
+    }
+    
+    function showNotificationDetails(message) {
+        document.getElementById("notificationMessage").innerText = message;
+        document.getElementById("notificationModal").style.display = "block";
+    }
+
+    function closeModal() {
+        document.getElementById("notificationModal").style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == document.getElementById("notificationModal")) {
+            closeModal();
+        }
+    }
+
 </script>
 
 <ul class="navbar-nav w-100">
     @if (SignInManager.IsSignedIn(User))
     {
-        @if (await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User) ?? new User(), "Admin"))
+        @if (string.Equals(role, "Admin", StringComparison.OrdinalIgnoreCase))
         {
             <li class="nav-item">
                 <a id="manage" class="nav-link text-dark bar-text" asp-controller="Admin" asp-action="Index">Admin Panel</a>
@@ -44,6 +77,19 @@
                 <a id="manage" class="btn btn-toolbar" asp-controller="User" asp-action="Index">
                     <i class="fas fa-user layout-icon"></i>
                 </a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="btn btn-toolbar" onclick="toggleDropdown()">
+                    <i class="fas fa-bell layout-icon"></i>
+                </a>
+                <div id="notificationDropdown" class="dropdown-content">
+                    @foreach (var n in notifications)
+                    {
+                        <div class="notification-item">
+                            <a href="javascript:void(0)" onclick="showNotificationDetails('@n.Message')">@n.Message</a>
+                        </div>
+                    }
+                </div>
             </li>
             <li class="nav-item justify-content-center">
                 <a id="home-icon" class="btn btn-toolbar" asp-action="Index" asp-controller="Home">
@@ -77,6 +123,13 @@
     }
 </ul>
 
+<div id="notificationModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <p id="notificationMessage"></p>
+    </div>
+</div>
+
 <style>
     .navbar-nav > li, .navbar-nav .d-flex {
         display: flex;
@@ -106,5 +159,67 @@
         width: 80%;
         display: flex;
         justify-content: center;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        max-width: 400px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        border: solid 2px black;
+        margin-top: 10px;
+        left: -250px; /* Adjust this value to move the dropdown to the left */
+        white-space: nowrap; /* Prevent text from wrapping */
+        overflow: hidden; /* Hide overflow text */
+        text-overflow: ellipsis; /* Add ellipsis for overflow text */
+    }
+
+    .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        white-space: nowrap; /* Prevent text from wrapping */
+        overflow: hidden; /* Hide overflow text */
+        text-overflow: ellipsis; /* Add ellipsis for overflow text */
+    }
+
+    .dropdown-content a:hover {
+        background-color: #f1f1f1;
+    }
+
+    .show {
+        display: block;
+    }
+    .notification-item{
+        border: 1px solid black;
+    }
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgb(0,0,0);
+        background-color: rgba(0,0,0,0.4);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
     }
 </style>

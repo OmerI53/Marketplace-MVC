@@ -38,8 +38,8 @@ public class NotificationService : INotificationService
         await _repository.Insert(notification);
     }
 
-    public IEnumerable<Notification> GetNotificationByUserId(string userId)
+    public async Task<IEnumerable<Notification>> GetNotificationByUserId(string userId)
     {
-        throw new NotImplementedException();
+        return await _repository.FindAsync(n => n.ReceiverId == userId && !n.IsRead);
     }
 }
